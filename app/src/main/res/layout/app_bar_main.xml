@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="top"
+        android:animateLayoutChanges="true"
+        android:background="@android:color/white"
+        app:tabGravity="fill"
+        app:tabMode="fixed" />
+
+    <include layout="@layout/contain_main"/>
+
+</android.support.design.widget.CoordinatorLayout>
