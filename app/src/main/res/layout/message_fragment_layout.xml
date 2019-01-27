@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/colorWhite"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
@@ -10,6 +11,7 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="5dp"
+        android:elevation="10dp"
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginTop="15dp">
@@ -28,6 +30,7 @@
                 />
 
             <TextView
+                android:id="@+id/count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="100"
@@ -42,6 +45,7 @@
         android:layout_height="wrap_content"
         app:cardBackgroundColor="@color/colorWhite"
         app:cardCornerRadius="5dp"
+        android:elevation="10dp"
         android:layout_margin="15dp">
 
         <LinearLayout
@@ -64,6 +68,7 @@
                     android:id="@+id/message_text"
                     android:layout_width="match_parent"
                     android:layout_height="180dp"
+                    android:maxLength="160"
                     android:layout_marginBottom="1dp"
                     android:background="@drawable/rectangle_round_two"
                     android:padding="10dp"
@@ -71,6 +76,7 @@
                     android:hint="Enter your message..."/>
 
                 <TextView
+                    android:id="@+id/message_length"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -133,6 +139,7 @@
 
 
             <FrameLayout
+                android:id="@+id/send_message"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_marginTop="10dp"

@@ -8,15 +8,22 @@ import android.os.Bundle;
 import com.example.arsojib.bulksms.Fragments.ContactListFragment;
 import com.example.arsojib.bulksms.Fragments.HomeFragment;
 import com.example.arsojib.bulksms.Fragments.MessageFragment;
+import com.example.arsojib.bulksms.Listener.ContactImportCompleteListener;
+import com.example.arsojib.bulksms.Model.Contact;
 import com.example.arsojib.bulksms.R;
 import com.example.arsojib.bulksms.Utils.CustomSwipeDisableViewPager;
 import com.example.arsojib.bulksms.Utils.ViewPagerAdapter;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
-    CustomSwipeDisableViewPager viewPager;
+    public CustomSwipeDisableViewPager viewPager;
     TabLayout tabLayout;
 
+    public ContactImportCompleteListener contactImportCompleteListener, contactImportCompleteCountListener;
+
+    public ArrayList<Contact> arrayList;
     private int[] tabIcons = {
             R.drawable.home_white,
             R.drawable.list_white,
