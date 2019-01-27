@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.arsojib.bulksms.R;
+import com.example.arsojib.bulksms.Utils.Util;
 
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -21,6 +22,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.home_frgament_layout, container, false);
+
+        initialComponent();
 
         importExcelLayout.setOnClickListener(this);
         importTextLayout.setOnClickListener(this);
@@ -44,11 +47,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.import_excel_layout) {
-            fragmentTransaction(new ImportFileFragment());
+            ImportFileFragment importFileFragment = new ImportFileFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("type", "xls");
+            importFileFragment.setArguments(bundle);
+            fragmentTransaction(importFileFragment);
         } else if (v.getId() == R.id.import_text_layout) {
-            fragmentTransaction(new ImportFileFragment());
+            ImportFileFragment importFileFragment = new ImportFileFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("type", "txt");
+            importFileFragment.setArguments(bundle);
+            fragmentTransaction(importFileFragment);
         } else if (v.getId() == R.id.import_contact_layout) {
-            fragmentTransaction(new ImportContactFragment());
+            if (new Util().checkPermissionReadContacts(getActivity())) {
+                fragmentTransaction(new ImportContactFragment());
+            }
         } else if (v.getId() == R.id.import_contact_group_layout) {
             fragmentTransaction(new ImportContactGroupFragment());
         } else if (v.getId() == R.id.schedule_sms_layout) {
