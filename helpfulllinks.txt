@@ -1,0 +1,11 @@
+set progress in notification android
+https://medium.com/@britt.barak/notifications-part-2-progress-indicator-2aa4cdea24c6
+https://stuff.mit.edu/afs/sipb/project/android/docs/training/notify-user/display-progress.html
+non cancellable notification android
+https://www.laurivan.com/android-make-your-notification-sticky/
+https://stackoverflow.com/questions/18464810/prevent-user-from-dismissing-notification
+send message from android app programmatically
+https://www.androidtutorialpoint.com/basics/send-sms-programmatically-android-tutorial/
+start service using alarmmanager android
+https://github.com/urbanairship/android-library/issues/16
+https://stackoverflow.com/questions/8321443/how-to-start-service-using-alarm-manager-in-android
