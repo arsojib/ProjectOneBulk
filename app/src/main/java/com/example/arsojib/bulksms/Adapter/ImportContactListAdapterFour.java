@@ -16,13 +16,17 @@ import com.example.arsojib.bulksms.R;
 
 import java.util.ArrayList;
 
-public class ImportContactListAdapterThree extends RecyclerView.Adapter<ImportContactListAdapterThree.ViewHolder> {
+/**
+ * Created by AR Sajib on 1/28/2019.
+ */
+
+public class ImportContactListAdapterFour extends RecyclerView.Adapter<ImportContactListAdapterFour.ViewHolder> {
 
     Context context;
     private ArrayList<Contact> arrayList;
     private ContactRemoveListener contactRemoveListener;
 
-    public ImportContactListAdapterThree(Context context, ArrayList<Contact> arrayList, ContactRemoveListener contactRemoveListener) {
+    public ImportContactListAdapterFour(Context context, ArrayList<Contact> arrayList, ContactRemoveListener contactRemoveListener) {
         this.context = context;
         this.arrayList = arrayList;
         this.contactRemoveListener = contactRemoveListener;
@@ -44,13 +48,6 @@ public class ImportContactListAdapterThree extends RecyclerView.Adapter<ImportCo
 
         viewHolder.name.setText(name);
         viewHolder.number.setText(number);
-
-        viewHolder.layout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                contactRemoveListener.onContactUnCheck(arrayList.get(i), i);
-            }
-        });
     }
 
     @Override

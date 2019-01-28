@@ -12,17 +12,22 @@ import android.widget.TextView;
 
 import com.example.arsojib.bulksms.Listener.ContactRemoveListener;
 import com.example.arsojib.bulksms.Model.Contact;
+import com.example.arsojib.bulksms.Model.Group;
 import com.example.arsojib.bulksms.R;
 
 import java.util.ArrayList;
 
-public class ImportContactListAdapterThree extends RecyclerView.Adapter<ImportContactListAdapterThree.ViewHolder> {
+/**
+ * Created by AR Sajib on 1/28/2019.
+ */
+
+public class ImportContactListAdapterFive extends RecyclerView.Adapter<ImportContactListAdapterFive.ViewHolder> {
 
     Context context;
-    private ArrayList<Contact> arrayList;
+    private ArrayList<Group> arrayList;
     private ContactRemoveListener contactRemoveListener;
 
-    public ImportContactListAdapterThree(Context context, ArrayList<Contact> arrayList, ContactRemoveListener contactRemoveListener) {
+    public ImportContactListAdapterFive(Context context, ArrayList<Group> arrayList, ContactRemoveListener contactRemoveListener) {
         this.context = context;
         this.arrayList = arrayList;
         this.contactRemoveListener = contactRemoveListener;
@@ -31,26 +36,28 @@ public class ImportContactListAdapterThree extends RecyclerView.Adapter<ImportCo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.contact_item_two, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.contact_item_three, viewGroup, false);
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
-        String name, number;
-        name = arrayList.get(i).getName().equals("") ? "Unknown" : arrayList.get(i).getName();
-        number = arrayList.get(i).getNumber();
+        final String id, name, count;
+        id = arrayList.get(i).getId();
+        name = arrayList.get(i).getTitle();
+        count = arrayList.get(i).getCount();
 
         viewHolder.name.setText(name);
-        viewHolder.number.setText(number);
+        viewHolder.number.setText(count);
 
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contactRemoveListener.onContactUnCheck(arrayList.get(i), i);
+                contactRemoveListener.onContactRemove(id, i);
             }
         });
+
     }
 
     @Override

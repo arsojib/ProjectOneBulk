@@ -10,7 +10,7 @@
         android:layout_height="60dp"
         android:layout_gravity="top"
         android:animateLayoutChanges="true"
-        android:background="@android:color/white"
+        android:background="@color/colorPrimary"
         app:tabGravity="fill"
         app:tabMode="fixed" />
 
