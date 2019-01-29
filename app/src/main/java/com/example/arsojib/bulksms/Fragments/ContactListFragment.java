@@ -87,7 +87,7 @@ public class ContactListFragment extends Fragment {
         } else {
             alert.setVisibility(View.GONE);
         }
-        count.setText(((MainActivity) getContext()).arrayList.size());
+        count.setText(((MainActivity) getContext()).arrayList.size() + "");
     }
 
 }

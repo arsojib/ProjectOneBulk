@@ -27,7 +27,7 @@
             android:text="Import Number"
             android:textStyle="bold"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/done"
@@ -39,7 +39,7 @@
             android:text="Done"
             android:textStyle="bold"
             android:textColor="@color/colorWhite"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
     </RelativeLayout>
 

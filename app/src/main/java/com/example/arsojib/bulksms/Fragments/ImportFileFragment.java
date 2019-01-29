@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.arsojib.bulksms.Activites.MainActivity;
 import com.example.arsojib.bulksms.Adapter.ImportContactListAdapter;
@@ -27,6 +28,7 @@ import com.example.arsojib.bulksms.R;
 import com.example.arsojib.bulksms.Utils.FileUtils;
 import com.example.arsojib.bulksms.Utils.Util;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
@@ -70,7 +72,8 @@ public class ImportFileFragment extends Fragment {
                 try {
                     arrayList.remove(position);
                     notifyChange();
-                } catch (IndexOutOfBoundsException ignored) {}
+                } catch (IndexOutOfBoundsException ignored) {
+                }
             }
 
             @Override
@@ -106,7 +109,12 @@ public class ImportFileFragment extends Fragment {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getContext()).contactImportCompleteListener.onImportComplete(arrayList);
+                if (arrayList.size() != 0) {
+                    ((MainActivity) getContext()).contactImportCompleteListener.onImportComplete(arrayList);
+                    getActivity().onBackPressed();
+                } else {
+                    Toast.makeText(getContext(), "Please select contact first.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -182,16 +190,16 @@ public class ImportFileFragment extends Fragment {
             XSSFWorkbook workbook = new XSSFWorkbook(myInput);
             XSSFSheet sheet = workbook.getSheetAt(0);
             Iterator rows = sheet.rowIterator();
-            int rowno =0;
+            int rowno = 0;
             while (rows.hasNext()) {
                 XSSFRow myRow = (XSSFRow) rows.next();
-                if(rowno !=0) {
+                if (rowno != 0) {
                     Iterator<Cell> cellIter = myRow.cellIterator();
-                    int colno =0;
+                    int colno = 0;
                     String number = "";
                     while (cellIter.hasNext()) {
                         XSSFCell myCell = (XSSFCell) cellIter.next();
-                        if (colno==0){
+                        if (colno == 0) {
                             number = myCell.toString();
                         }
                         colno++;
@@ -229,8 +237,7 @@ public class ImportFileFragment extends Fragment {
             }
             notifyChange();
             br.close();
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             //You'll need to add proper error handling here
         }
 

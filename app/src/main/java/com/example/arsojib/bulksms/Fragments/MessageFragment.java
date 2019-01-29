@@ -66,7 +66,7 @@ public class MessageFragment extends Fragment {
 
             @Override
             public void onImportCompleteCount(int contactCount) {
-                count.setText(contactCount);
+                count.setText(contactCount + "");
             }
         };
 
@@ -130,6 +130,8 @@ public class MessageFragment extends Fragment {
                         REQUEST_SMS);
                 return;
             }
+            sendMySMS();
+        } else {
             sendMySMS();
         }
 

@@ -23,7 +23,10 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/rectangle_round_one"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
                 android:layout_weight="1">
 
                 <ImageView
@@ -36,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Import Excel File"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"/>
 
@@ -49,7 +52,10 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/rectangle_round_one"
-                android:layout_margin="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1">
 
                 <ImageView
@@ -62,7 +68,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Import Text File"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"/>
 
@@ -83,7 +89,10 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/rectangle_round_one"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
                 android:layout_weight="1">
 
                 <ImageView
@@ -96,7 +105,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Import Contact List"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"/>
 
@@ -109,7 +118,10 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/rectangle_round_one"
-                android:layout_margin="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1">
 
                 <ImageView
@@ -122,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Import Contact Group"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"/>
 
@@ -143,7 +155,10 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/rectangle_round_one"
-                android:layout_margin="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="20dp"
                 android:layout_weight="1">
 
                 <ImageView
@@ -156,7 +171,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Schedule Sms"
-                    android:textSize="14sp"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"/>
 
@@ -169,7 +184,10 @@
                 android:orientation="vertical"
                 android:gravity="center"
                 android:background="@drawable/rectangle_round_one"
-                android:layout_margin="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_weight="1">
 
                 <ImageView
@@ -181,8 +199,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="About Us"
-                    android:textSize="14sp"
+                    android:text="History"
+                    android:textSize="12sp"
                     android:textStyle="bold"
                     android:textColor="@color/colorWhite"/>
 
