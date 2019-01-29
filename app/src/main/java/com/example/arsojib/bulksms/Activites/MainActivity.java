@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupTabIcons() {
         try {
-            tabLayout.getTabAt(0).setCustomView(tabIcons[0]);
-            tabLayout.getTabAt(1).setCustomView(tabIcons[1]);
-            tabLayout.getTabAt(2).setCustomView(tabIcons[2]);
+            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
         } catch (RuntimeException ignored) {
         }
     }

@@ -12,3 +12,6 @@ https://stackoverflow.com/questions/8321443/how-to-start-service-using-alarm-man
 sendtextmessage scaddress target sim
 https://stackoverflow.com/questions/21410126/option-to-send-sms-using-sim1-or-sim2-programmatically/51380282#51380282
 https://stackoverflow.com/questions/27351936/how-to-send-a-sms-using-smsmanager-in-dual-sim-mobile
+
+https://developer.android.com/training/scheduling/alarms#java
+https://blog.teamtreehouse.com/scheduling-time-sensitive-tasks-in-android-with-alarmmanager
