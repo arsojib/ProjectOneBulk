@@ -30,10 +30,10 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_margin="5dp"
-                    android:src="@drawable/xls_icon"/>
+                    android:src="@drawable/exl_file"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -59,10 +59,10 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_margin="5dp"
-                    android:src="@drawable/text_icon"/>
+                    android:src="@drawable/text_file"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -96,10 +96,10 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_margin="5dp"
-                    android:src="@drawable/excel_white"/>
+                    android:src="@drawable/contact_add"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -125,10 +125,10 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_margin="5dp"
-                    android:src="@drawable/g_message"/>
+                    android:src="@drawable/group_add"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -162,10 +162,10 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_margin="5dp"
-                    android:src="@drawable/excel_white"/>
+                    android:src="@drawable/schdule"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -178,7 +178,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/about_us_layout"
+                android:id="@+id/history_layout"
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
                 android:orientation="vertical"
@@ -191,10 +191,10 @@
                 android:layout_weight="1">
 
                 <ImageView
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
                     android:layout_margin="5dp"
-                    android:src="@drawable/excel_white"/>
+                    android:src="@drawable/history"/>
 
                 <TextView
                     android:layout_width="wrap_content"

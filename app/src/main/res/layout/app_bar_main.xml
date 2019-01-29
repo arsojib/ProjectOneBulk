@@ -1,19 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tab_layout"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_gravity="top"
-        android:animateLayoutChanges="true"
-        android:background="@color/colorPrimary"
-        app:tabGravity="fill"
-        app:tabMode="fixed" />
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <include layout="@layout/contain_main"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:background="@color/colorPrimary">
+
+            <ImageView
+                android:id="@+id/drawer"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginStart="5dp"
+                android:padding="12dp"
+                android:src="@drawable/drawer" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginStart="20dp"
+                android:layout_toEndOf="@+id/back"
+                android:text="Bulk Sms"
+                android:textColor="@color/colorWhite"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+        </RelativeLayout>
+
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_gravity="top"
+            android:animateLayoutChanges="true"
+            android:background="@color/colorPrimary"
+            app:tabGravity="fill"
+            app:tabMode="fixed" />
+
+    </LinearLayout>
+
+    <include layout="@layout/contain_main" />
 
 </android.support.design.widget.CoordinatorLayout>

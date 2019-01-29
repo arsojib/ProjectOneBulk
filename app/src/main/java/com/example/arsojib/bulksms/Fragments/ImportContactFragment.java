@@ -58,7 +58,13 @@ public class ImportContactFragment extends Fragment {
 
         initialComponent();
         getContactList();
-//        getContactGroup();
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getActivity().onBackPressed();
+            }
+        });
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,30 +105,6 @@ public class ImportContactFragment extends Fragment {
         } finally {
             if (phones != null) {
                 phones.close();
-            }
-        }
-    }
-
-    private void getContactGroup() {
-        final String[] GROUP_PROJECTION = new String[] {
-                ContactsContract.Groups._ID, ContactsContract.Groups.TITLE };
-        Cursor gC = null;
-        try {
-            gC = getActivity().getContentResolver().query(
-                    ContactsContract.Groups.CONTENT_URI, GROUP_PROJECTION, null, null, null);
-            gC.moveToFirst();
-            while (!gC.isAfterLast()) {
-                int idcolumn = gC.getColumnIndex(ContactsContract.Groups.TITLE);
-                String Id = gC.getString(idcolumn);
-//                arrayList.add(Id);
-                gC.moveToNext();
-            }
-            importContactListAdapter.notifyDataSetChanged();
-        } catch (NullPointerException ignored) {
-
-        } finally {
-            if (gC != null) {
-                gC.close();
             }
         }
     }

@@ -30,8 +30,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String STATUS = "status";
     private static final String TIME = "time";
 
-    private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + MESSAGE + " VARCHAR " + ");";
-    private static final String CREATE_TABLE_NUMBERS = "CREATE TABLE " + TABLE_NUMBERS + " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + MESSAGE_ID + " INTEGER, " + NUMBER + " VARCHAR, "  + STATUS + " INTEGER, " + TIME + " BIGINT " + ");";
+    private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " ( " + ID + " BIGINT, " + MESSAGE + " VARCHAR " + ");";
+    private static final String CREATE_TABLE_NUMBERS = "CREATE TABLE " + TABLE_NUMBERS + " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + MESSAGE_ID + " BIGINT, " + NUMBER + " VARCHAR, "  + STATUS + " INTEGER, " + TIME + " BIGINT " + ");";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -52,30 +52,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(sqLiteDatabase);
     }
 
-    public void addMessage(String message, long time, int status, ArrayList<Contact> arrayList) {
+    public void addMessage(long messageId, String message, long time, int status, ArrayList<Contact> arrayList) {
         SQLiteDatabase db = this.getWritableDatabase();
-        SQLiteDatabase liteDatabase = this.getReadableDatabase();
-
         ContentValues contentValues = new ContentValues();
+        contentValues.put(ID, messageId);
         contentValues.put(MESSAGE, message);
+        contentValues.put(TIME, time);
         db.insert(TABLE_MESSAGES, null, contentValues);
         db.close();
-
-//        String sql = "SELECT * FROM " + TABLE_MESSAGES + ";";
-        String sql = "SELECT last_insert_rowid()" + ";";
-        Cursor c = liteDatabase.rawQuery(sql, null);
-        int id = 0;
-        if (c.moveToFirst()) {
-            do {
-                id = c.getInt(0);
-            } while (c.moveToNext());
-        }
-        c.close();
-        liteDatabase.close();
-        addNumber(id, time, status, arrayList);
+        addNumber(messageId, time, status, arrayList);
     }
 
-    public void addNumber(int messageId, long time, int status, ArrayList<Contact> arrayList) {
+    public void addNumber(long messageId, long time, int status, ArrayList<Contact> arrayList) {
         SQLiteDatabase db = this.getWritableDatabase();
         for (Contact contact : arrayList) {
             ContentValues contentValues = new ContentValues();
@@ -95,7 +83,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Cursor c = db.rawQuery(sql, null);
         if (c.moveToFirst()) {
             do {
-                Message message = new Message(c.getInt(0), c.getString(1));
+                Message message = new Message(c.getLong(0), c.getString(1), c.getLong(2));
                 messages.add(message);
             } while (c.moveToNext());
         }
@@ -104,14 +92,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return messages;
     }
 
-    public ArrayList<Contact> getAllNumberUsingMessageID(int messageId) {
+    public ArrayList<Contact> getAllNumberUsingMessageID(long messageId, int status) {
         ArrayList<Contact> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM " + TABLE_MESSAGES + " WHERE " + MESSAGE_ID + "=" + messageId + ";";
+        String sql = "SELECT * FROM " + TABLE_MESSAGES + " WHERE " + MESSAGE_ID + "=" + messageId + " AND " + STATUS + "=" + status + ";";
         Cursor c = db.rawQuery(sql, null);
         if (c.moveToFirst()) {
             do {
-                Contact contact = new Contact(c.getInt(0), c.getInt(1), c.getString(2), c.getInt(3), c.getLong(4));
+                Contact contact = new Contact(c.getInt(0), c.getLong(1), c.getString(2), c.getInt(3), c.getLong(4));
                 contacts.add(contact);
             } while (c.moveToNext());
         }

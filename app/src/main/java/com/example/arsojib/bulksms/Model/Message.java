@@ -6,19 +6,20 @@ package com.example.arsojib.bulksms.Model;
 
 public class Message {
 
-    private int id;
+    private long id;
     private String message;
+    private long time;
 
-    public Message(int id, String message) {
+    public Message(long id, String message, long time) {
         this.id = id;
         this.message = message;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -28,5 +29,13 @@ public class Message {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

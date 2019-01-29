@@ -10,6 +10,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * Created by AR Sajib on 1/27/2019.
  */
@@ -17,6 +20,24 @@ import android.support.v7.app.AlertDialog;
 public class Util {
 
     private final int MY_PERMISSIONS_REQUEST = 123;
+    public static long smsId = 0;
+
+    public static String getDateFromLong(long val) {
+        Date date=new Date(val);
+        SimpleDateFormat df2 = new SimpleDateFormat("hh:mm a dd MMM yyyy");
+        String dateText = df2.format(date);
+        return dateText;
+    }
+
+    public static String getStatus(int val) {
+        if (val == 1) {
+            return "Sent";
+        } else if (val == 2) {
+            return "Delivered";
+        } else {
+            return "Not Sent";
+        }
+    }
 
     public boolean checkPermissionREAD_EXTERNAL_STORAGE(
             final Context context) {

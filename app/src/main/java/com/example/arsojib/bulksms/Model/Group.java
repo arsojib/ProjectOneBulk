@@ -1,5 +1,7 @@
 package com.example.arsojib.bulksms.Model;
 
+import java.util.ArrayList;
+
 /**
  * Created by AR Sajib on 1/28/2019.
  */
@@ -8,12 +10,14 @@ public class Group {
 
     private String id, title, count;
     private boolean check;
+    private ArrayList<Contact> arrayList;
 
-    public Group(String id, String title, String count, boolean check) {
+    public Group(String id, String title, String count, boolean check, ArrayList<Contact> arrayList) {
         this.id = id;
         this.title = title;
         this.count = count;
         this.check = check;
+        this.arrayList = arrayList;
     }
 
     public String getId() {
@@ -46,5 +50,13 @@ public class Group {
 
     public void setCheck(boolean check) {
         this.check = check;
+    }
+
+    public ArrayList<Contact> getArrayList() {
+        return arrayList;
+    }
+
+    public void setArrayList(ArrayList<Contact> arrayList) {
+        this.arrayList = arrayList;
     }
 }

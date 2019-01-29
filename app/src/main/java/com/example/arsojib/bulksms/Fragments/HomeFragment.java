@@ -16,7 +16,7 @@ import com.example.arsojib.bulksms.Utils.Util;
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
     View view;
-    LinearLayout importExcelLayout, importTextLayout, importContactLayout, importContactGroupLayout, scheduleSmsLayout, aboutUsLayout;
+    LinearLayout importExcelLayout, importTextLayout, importContactLayout, importContactGroupLayout, scheduleSmsLayout, historyLayout;
 
     @Nullable
     @Override
@@ -30,7 +30,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         importContactLayout.setOnClickListener(this);
         importContactGroupLayout.setOnClickListener(this);
         scheduleSmsLayout.setOnClickListener(this);
-        aboutUsLayout.setOnClickListener(this);
+        historyLayout.setOnClickListener(this);
 
         return view;
     }
@@ -41,7 +41,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         importContactLayout = view.findViewById(R.id.import_contact_layout);
         importContactGroupLayout = view.findViewById(R.id.import_contact_group_layout);
         scheduleSmsLayout = view.findViewById(R.id.schedule_sms_layout);
-        aboutUsLayout = view.findViewById(R.id.about_us_layout);
+        historyLayout = view.findViewById(R.id.history_layout);
     }
 
     @Override
@@ -66,8 +66,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             fragmentTransaction(new ImportContactGroupFragment());
         } else if (v.getId() == R.id.schedule_sms_layout) {
 
-        } else if (v.getId() == R.id.about_us_layout) {
-
+        } else if (v.getId() == R.id.history_layout) {
+            fragmentTransaction(new SmsListFragment());
         }
     }
 

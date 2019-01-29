@@ -1,78 +1,65 @@
 package com.example.arsojib.bulksms.Fragments;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.arsojib.bulksms.Adapter.ImportContactListAdapterFour;
-import com.example.arsojib.bulksms.Adapter.ImportContactListAdapterTwo;
-import com.example.arsojib.bulksms.Listener.ContactRemoveListener;
+import com.example.arsojib.bulksms.Adapter.SmsSentAdapter;
+import com.example.arsojib.bulksms.DataFetch.DatabaseHelper;
 import com.example.arsojib.bulksms.Model.Contact;
 import com.example.arsojib.bulksms.R;
+import com.example.arsojib.bulksms.Utils.Util;
 
 import java.util.ArrayList;
 
-/**
- * Created by AR Sajib on 1/28/2019.
- */
-
-public class ImportContactFromGroupFragment extends Fragment {
+public class SmsDeliveredFragment extends Fragment {
 
     View view;
-    ImageView back;
-    TextView alert;
     RecyclerView recyclerView;
+    ProgressBar progressBar;
+    TextView alert;
 
-    String groupId;
-    ImportContactListAdapterFour importContactListAdapter;
     ArrayList<Contact> arrayList;
+    SmsSentAdapter smsSentAdapter;
+    DatabaseHelper databaseHelper;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.import_contact_from_group_fragment_layout, container, false);
+        view = inflater.inflate(R.layout.sms_sent_layout, container, false);
 
         initialComponent();
         getData();
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
-
         return view;
+    }
+
+    private void getData() {
+        arrayList = databaseHelper.getAllNumberUsingMessageID(Util.smsId, 2);
+        notifyChange();
     }
 
     private void initialComponent() {
         arrayList = new ArrayList<>();
-        importContactListAdapter = new ImportContactListAdapterFour(getActivity(), arrayList, null);
-        back = view.findViewById(R.id.back);
+        smsSentAdapter = new SmsSentAdapter(getActivity(), arrayList);
+        databaseHelper = new DatabaseHelper(getActivity());
+        progressBar = view.findViewById(R.id.progress_bar);
         alert = view.findViewById(R.id.alert_text);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(importContactListAdapter);
-    }
-
-    private void getData() {
-        arrayList = (ArrayList<Contact>) getArguments().getSerializable("contacts");
-        notifyChange();
+        recyclerView.setAdapter(smsSentAdapter);
     }
 
     private void notifyChange() {
-        importContactListAdapter.notifyDataSetChanged();
+        smsSentAdapter.notifyDataSetChanged();
         if (arrayList.size() == 0) {
             alert.setVisibility(View.VISIBLE);
         } else {

@@ -1,8 +1,6 @@
 package com.example.arsojib.bulksms.Fragments;
 
-import android.database.Cursor;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,35 +11,43 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.example.arsojib.bulksms.Adapter.ImportContactListAdapterFour;
-import com.example.arsojib.bulksms.Adapter.ImportContactListAdapterTwo;
-import com.example.arsojib.bulksms.Listener.ContactRemoveListener;
-import com.example.arsojib.bulksms.Model.Contact;
+import com.example.arsojib.bulksms.Adapter.SmsListAdapter;
+import com.example.arsojib.bulksms.DataFetch.DatabaseHelper;
+import com.example.arsojib.bulksms.Listener.ClickListener;
+import com.example.arsojib.bulksms.Model.Message;
 import com.example.arsojib.bulksms.R;
+import com.example.arsojib.bulksms.Utils.Util;
 
 import java.util.ArrayList;
 
-/**
- * Created by AR Sajib on 1/28/2019.
- */
-
-public class ImportContactFromGroupFragment extends Fragment {
+public class SmsListFragment extends Fragment {
 
     View view;
     ImageView back;
-    TextView alert;
     RecyclerView recyclerView;
+    TextView alert;
+    ProgressBar progressBar;
 
-    String groupId;
-    ImportContactListAdapterFour importContactListAdapter;
-    ArrayList<Contact> arrayList;
+    ArrayList<Message> arrayList;
+    SmsListAdapter smsListAdapter;
+    DatabaseHelper databaseHelper;
+    ClickListener clickListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.import_contact_from_group_fragment_layout, container, false);
+        view = inflater.inflate(R.layout.sms_list_layout, container, false);
+
+        clickListener = new ClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                Util.smsId = arrayList.get(position).getId();
+                fragmentTransaction(new SmsHistoryFragment());
+            }
+        };
 
         initialComponent();
         getData();
@@ -58,21 +64,30 @@ public class ImportContactFromGroupFragment extends Fragment {
 
     private void initialComponent() {
         arrayList = new ArrayList<>();
-        importContactListAdapter = new ImportContactListAdapterFour(getActivity(), arrayList, null);
+        smsListAdapter = new SmsListAdapter(getActivity(), arrayList, clickListener);
+        databaseHelper = new DatabaseHelper(getActivity());
         back = view.findViewById(R.id.back);
         alert = view.findViewById(R.id.alert_text);
+        progressBar = view.findViewById(R.id.progress_bar);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(importContactListAdapter);
+        recyclerView.setAdapter(smsListAdapter);
     }
 
     private void getData() {
-        arrayList = (ArrayList<Contact>) getArguments().getSerializable("contacts");
+        arrayList = databaseHelper.getAllMessage();
         notifyChange();
     }
 
+    private void fragmentTransaction(Fragment fragment) {
+        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.contain_main, fragment);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
     private void notifyChange() {
-        importContactListAdapter.notifyDataSetChanged();
+        smsListAdapter.notifyDataSetChanged();
         if (arrayList.size() == 0) {
             alert.setVisibility(View.VISIBLE);
         } else {

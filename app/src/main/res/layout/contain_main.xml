@@ -11,14 +11,14 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:layout_gravity="top"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="110dp"
         android:background="@android:color/darker_gray" />
 
     <com.example.arsojib.bulksms.Utils.CustomSwipeDisableViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="61dp"
+        android:layout_marginTop="111dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 </android.support.design.widget.CoordinatorLayout>

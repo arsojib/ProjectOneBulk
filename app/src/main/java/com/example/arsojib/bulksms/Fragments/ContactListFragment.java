@@ -51,6 +51,7 @@ public class ContactListFragment extends Fragment {
         };
 
         initialComponent();
+        notifyChange();
 
         ((MainActivity) getContext()).contactImportCompleteListener = new ContactImportCompleteListener() {
             @Override

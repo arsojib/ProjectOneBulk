@@ -6,10 +6,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.arsojib.bulksms.Listener.ClickListener;
 import com.example.arsojib.bulksms.Listener.ContactRemoveListener;
 import com.example.arsojib.bulksms.Model.Contact;
 import com.example.arsojib.bulksms.Model.Group;
@@ -25,12 +28,12 @@ public class ImportContactListAdapterFive extends RecyclerView.Adapter<ImportCon
 
     Context context;
     private ArrayList<Group> arrayList;
-    private ContactRemoveListener contactRemoveListener;
+    private ClickListener clickListener;
 
-    public ImportContactListAdapterFive(Context context, ArrayList<Group> arrayList, ContactRemoveListener contactRemoveListener) {
+    public ImportContactListAdapterFive(Context context, ArrayList<Group> arrayList, ClickListener clickListener) {
         this.context = context;
         this.arrayList = arrayList;
-        this.contactRemoveListener = contactRemoveListener;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -43,18 +46,38 @@ public class ImportContactListAdapterFive extends RecyclerView.Adapter<ImportCon
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
-        final String id, name, count;
+        final String id, name;
+        boolean check;
+        int count;
         id = arrayList.get(i).getId();
         name = arrayList.get(i).getTitle();
-        count = arrayList.get(i).getCount();
+        count = arrayList.get(i).getArrayList().size();
+        check = arrayList.get(i).isCheck();
 
         viewHolder.name.setText(name);
-        viewHolder.number.setText(count);
+        viewHolder.number.setText("(" + count + ")");
+
+        if (check) {
+            viewHolder.add.setChecked(true);
+        } else {
+            viewHolder.add.setChecked(false);
+        }
 
         viewHolder.layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                contactRemoveListener.onContactRemove(id, i);
+                clickListener.onItemClick(i);
+            }
+        });
+
+        viewHolder.add.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    arrayList.get(i).setCheck(true);
+                } else {
+                    arrayList.get(i).setCheck(false);
+                }
             }
         });
 
@@ -69,7 +92,7 @@ public class ImportContactListAdapterFive extends RecyclerView.Adapter<ImportCon
 
         RelativeLayout layout;
         TextView name, number;
-        ImageView remove;
+        CheckBox add;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -77,7 +100,7 @@ public class ImportContactListAdapterFive extends RecyclerView.Adapter<ImportCon
             layout = itemView.findViewById(R.id.layout);
             name = itemView.findViewById(R.id.name);
             number = itemView.findViewById(R.id.number);
-            remove = itemView.findViewById(R.id.remove);
+            add = itemView.findViewById(R.id.add);
 
         }
     }
