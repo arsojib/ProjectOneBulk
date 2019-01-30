@@ -94,6 +94,7 @@ public class ImportContactGroupFragment extends Fragment {
                     }
                 }
                 ((MainActivity) getContext()).contactImportCompleteListener.onImportComplete(contacts);
+                getActivity().onBackPressed();
             }
         });
 

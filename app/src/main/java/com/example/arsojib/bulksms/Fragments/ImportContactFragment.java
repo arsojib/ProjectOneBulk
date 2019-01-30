@@ -30,7 +30,6 @@ public class ImportContactFragment extends Fragment {
     View view;
     ImageView back;
     TextView done, alert;
-    EditText search;
     CheckBox selectAll;
     RecyclerView recyclerView;
 
@@ -69,7 +68,14 @@ public class ImportContactFragment extends Fragment {
         done.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity) getContext()).contactImportCompleteListener.onImportComplete(arrayList);
+                ArrayList<Contact> contacts = new ArrayList<>();
+                for (int i = 0; i < arrayList.size(); i++) {
+                    if (arrayList.get(i).isCheck()) {
+                        contacts.add(arrayList.get(i));
+                    }
+                }
+                ((MainActivity) getContext()).contactImportCompleteListener.onImportComplete(contacts);
+                getActivity().onBackPressed();
             }
         });
 
@@ -82,7 +88,6 @@ public class ImportContactFragment extends Fragment {
         back = view.findViewById(R.id.back);
         done = view.findViewById(R.id.done);
         alert = view.findViewById(R.id.alert_text);
-        search = view.findViewById(R.id.search);
         selectAll = view.findViewById(R.id.checkbox);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

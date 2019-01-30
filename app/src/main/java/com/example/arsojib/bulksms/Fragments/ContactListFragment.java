@@ -64,7 +64,7 @@ public class ContactListFragment extends Fragment {
 
             @Override
             public void onImportCompleteCount(int count) {
-
+                notifyChange();
             }
         };
 

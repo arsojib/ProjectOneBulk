@@ -63,7 +63,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 fragmentTransaction(new ImportContactFragment());
             }
         } else if (v.getId() == R.id.import_contact_group_layout) {
-            fragmentTransaction(new ImportContactGroupFragment());
+            if (new Util().checkPermissionReadContacts(getActivity())) {
+                fragmentTransaction(new ImportContactGroupFragment());
+            }
         } else if (v.getId() == R.id.schedule_sms_layout) {
 
         } else if (v.getId() == R.id.history_layout) {

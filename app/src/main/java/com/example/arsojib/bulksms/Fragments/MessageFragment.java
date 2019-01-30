@@ -49,6 +49,7 @@ public class MessageFragment extends Fragment {
 
     String message = "";
     final int REQUEST_SMS = 111;
+    int smsCount = 0;
 
 
     @Nullable
@@ -147,13 +148,23 @@ public class MessageFragment extends Fragment {
     }
 
     private void sendMySMS() {
+        ArrayList<Contact> contacts = new ArrayList<>();
+        contacts.addAll(((MainActivity) getContext()).arrayList);
         Intent intent = new Intent(getActivity(), SmsManagementService.class);
-        intent.putExtra("contact_list", ((MainActivity) getContext()).arrayList);
+        intent.putExtra("contact_list", contacts);
         intent.putExtra("message", message);
         getActivity().startService(intent);
+        showMessageSentProgress(((MainActivity) getContext()).arrayList.size());
+        clearHistory();
     }
 
-    private void showMessageSentProgress() {
+    private void clearHistory() {
+        ((MainActivity) getContext()).arrayList.clear();
+        messageText.setText("");
+        ((MainActivity) getContext()).contactImportCompleteListener.onImportCompleteCount(0);
+    }
+
+    private void showMessageSentProgress(final int total) {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
@@ -162,18 +173,24 @@ public class MessageFragment extends Fragment {
         dialog.setCancelable(false);
 
         ImageView close = dialog.findViewById(R.id.close);
-        TextView sentCount = dialog.findViewById(R.id.sent_count);
-        ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
+        final TextView sentCount = dialog.findViewById(R.id.sent_count);
+        final ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);
 
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                int status;
-                String number;
-
-                status = intent.getIntExtra("status", 0);
-                number = intent.getStringExtra("number");
-
+//                int status;
+//                String number;
+//                status = intent.getIntExtra("status", 0);
+//                number = intent.getStringExtra("number");
+                smsCount++;
+                if (smsCount >= total) {
+                    sentCount.setText("Sent: " + total + " / " + "Total: " + total);
+                    progressBar.setProgress(100);
+                } else {
+                    sentCount.setText("Sent: " + smsCount + " / " + "Total: " + total);
+                    progressBar.setProgress((int)(smsCount/total) * 100);
+                }
             }
         };
 

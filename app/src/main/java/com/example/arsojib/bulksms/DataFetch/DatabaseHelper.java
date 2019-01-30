@@ -108,9 +108,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return contacts;
     }
 
-    public void setMessageUpdate(String number, int status, long time) {
+    public void setMessageUpdate(long messageId, String number, int status, long time) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String updateSql = "UPDATE " + TABLE_NUMBERS + " SET " + STATUS + "=" + status + "," + TIME + "=" + time + " WHERE " + NUMBER + "=" + number + ";";
+        String updateSql = "UPDATE " + TABLE_NUMBERS + " SET " + STATUS + "=" + status + "," + TIME + "=" + time + " WHERE " + NUMBER + "=" + number + " AND " + MESSAGE_ID + "=" + messageId + ";";
         db.execSQL(updateSql);
         db.close();
     }
