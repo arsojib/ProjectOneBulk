@@ -40,7 +40,6 @@
             android:ellipsize="end"
             android:text="2:00 pm 10 Feb 2019"
             android:textSize="14sp"
-            android:textStyle="bold"
             android:textColor="@color/colorWhite" />
 
     </RelativeLayout>

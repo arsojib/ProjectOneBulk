@@ -41,7 +41,8 @@ public class SmsHistoryFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getActivity().onBackPressed();
+//                getActivity().onBackPressed();
+                getChildFragmentManager().popBackStack();
             }
         });
 
@@ -56,7 +57,7 @@ public class SmsHistoryFragment extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter.mFragmentList.clear();
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getActivity().getSupportFragmentManager());
+        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
         adapter.addFragment(new SmsNotSentFragment());
         adapter.addFragment(new SmsSentFragment());
         adapter.addFragment(new SmsDeliveredFragment());

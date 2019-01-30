@@ -184,35 +184,40 @@ public class ImportFileFragment extends Fragment {
                 path = uri.getPath();
             }
         }
-        File file = new File(path);
-        try {
-            FileInputStream myInput = new FileInputStream(file);
-            XSSFWorkbook workbook = new XSSFWorkbook(myInput);
-            XSSFSheet sheet = workbook.getSheetAt(0);
-            Iterator rows = sheet.rowIterator();
-            int rowno = 0;
-            while (rows.hasNext()) {
-                XSSFRow myRow = (XSSFRow) rows.next();
-                if (rowno != 0) {
-                    Iterator<Cell> cellIter = myRow.cellIterator();
-                    int colno = 0;
-                    String number = "";
-                    while (cellIter.hasNext()) {
-                        XSSFCell myCell = (XSSFCell) cellIter.next();
-                        if (colno == 0) {
-                            number = myCell.toString();
+        File file = null;
+        if (path != null) {
+            file = new File(path);
+            try {
+                FileInputStream myInput = new FileInputStream(file);
+                XSSFWorkbook workbook = new XSSFWorkbook(myInput);
+                XSSFSheet sheet = workbook.getSheetAt(0);
+                Iterator rows = sheet.rowIterator();
+                int rowno = 0;
+                while (rows.hasNext()) {
+                    XSSFRow myRow = (XSSFRow) rows.next();
+                    if (rowno != 0) {
+                        Iterator<Cell> cellIter = myRow.cellIterator();
+                        int colno = 0;
+                        String number = "";
+                        while (cellIter.hasNext()) {
+                            XSSFCell myCell = (XSSFCell) cellIter.next();
+                            if (colno == 0) {
+                                number = myCell.toString();
+                            }
+                            colno++;
+                            Log.e(TAG, " Index :" + myCell.getColumnIndex() + " -- " + myCell.toString());
                         }
-                        colno++;
-                        Log.e(TAG, " Index :" + myCell.getColumnIndex() + " -- " + myCell.toString());
+                        arrayList.add(new Contact("", number, true));
                     }
-                    arrayList.add(new Contact("", number, true));
-                }
 
-                rowno++;
+                    rowno++;
+                }
+                notifyChange();
+            } catch (Exception e) {
+                Log.e(TAG, "error " + e.toString());
             }
-            notifyChange();
-        } catch (Exception e) {
-            Log.e(TAG, "error " + e.toString());
+        } else {
+            Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -228,19 +233,23 @@ public class ImportFileFragment extends Fragment {
                 path = uri.getPath();
             }
         }
-        File file = new File(path);
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String line;
-            while ((line = br.readLine()) != null) {
-                arrayList.add(new Contact("", line, true));
+        File file = null;
+        if (path != null) {
+            file = new File(path);
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(file));
+                String line;
+                while ((line = br.readLine()) != null) {
+                    arrayList.add(new Contact("", line, true));
+                }
+                notifyChange();
+                br.close();
+            } catch (IOException e) {
+                //You'll need to add proper error handling here
             }
-            notifyChange();
-            br.close();
-        } catch (IOException e) {
-            //You'll need to add proper error handling here
+        } else {
+            Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
         }
-
     }
 
     private void notifyChange() {

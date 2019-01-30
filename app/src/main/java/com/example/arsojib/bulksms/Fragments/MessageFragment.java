@@ -16,6 +16,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -26,7 +28,9 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,19 +41,22 @@ import com.example.arsojib.bulksms.R;
 import com.example.arsojib.bulksms.Service.SmsManagementService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static android.Manifest.permission.SEND_SMS;
 
 public class MessageFragment extends Fragment {
 
     View view;
+    LinearLayout simSelectionLayout, simOneLayout, simTwoLayout;
+    RadioButton simOneButton, simTwoButton;
     TextView count, messageLength;
     EditText messageText;
     FrameLayout sendMessage;
 
     String message = "";
     final int REQUEST_SMS = 111;
-    int smsCount = 0;
+    int smsCount = 0, sim = 0;
 
 
     @Nullable
@@ -58,6 +65,7 @@ public class MessageFragment extends Fragment {
         view = inflater.inflate(R.layout.message_fragment_layout, container, false);
 
         initialComponent();
+        simCheck();
 
         ((MainActivity) getContext()).contactImportCompleteCountListener = new ContactImportCompleteListener() {
             @Override
@@ -70,6 +78,7 @@ public class MessageFragment extends Fragment {
                 count.setText(contactCount + "");
             }
         };
+
 
         messageText.addTextChangedListener(new TextWatcher() {
             @Override
@@ -91,12 +100,14 @@ public class MessageFragment extends Fragment {
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                message = messageText.getText().toString().trim();
-                if (((MainActivity) getContext()).arrayList.size() != 0 && !message.equals("")) {
-                    checkPermission();
-                } else {
-                    Toast.makeText(getContext(), "Please add contact first.", Toast.LENGTH_SHORT).show();
-                }
+//                message = messageText.getText().toString().trim();
+//                if (((MainActivity) getContext()).arrayList.size() != 0 && !message.equals("")) {
+//                    checkPermission();
+//                } else {
+//                    Toast.makeText(getContext(), "Please add contact first.", Toast.LENGTH_SHORT).show();
+//                }
+
+                showMessageSentProgress(100);
             }
         });
 
@@ -104,10 +115,52 @@ public class MessageFragment extends Fragment {
     }
 
     private void initialComponent() {
+        simSelectionLayout = view.findViewById(R.id.sim_selection_layout);
+        simOneLayout = view.findViewById(R.id.sim_one_layout);
+        simTwoLayout = view.findViewById(R.id.sim_two_layout);
+        simOneButton = view.findViewById(R.id.sim_one_button);
+        simTwoButton = view.findViewById(R.id.sim_two_button);
         count = view.findViewById(R.id.count);
         messageText = view.findViewById(R.id.message_text);
         messageLength = view.findViewById(R.id.message_length);
         sendMessage = view.findViewById(R.id.send_message);
+    }
+
+    private void simCheck() {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            simSelectionLayout.setVisibility(View.VISIBLE);
+            try {
+                SubscriptionManager subscriptionManager = (SubscriptionManager)getActivity().getSystemService(Context.TELEPHONY_SUBSCRIPTION_SERVICE);
+                List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
+                if (subscriptionInfoList == null || subscriptionInfoList.size() == 0) {
+                    simSelectionLayout.setVisibility(View.GONE);
+                } else if (subscriptionInfoList.size() == 1){
+                    simSelectionLayout.setVisibility(View.VISIBLE);
+                    if (subscriptionInfoList.get(0).getSubscriptionId() == 1) {
+                        simOneLayout.setVisibility(View.VISIBLE);
+                        simTwoLayout.setVisibility(View.GONE);
+                    } else if (subscriptionInfoList.get(0).getSubscriptionId() == 2) {
+                        simOneLayout.setVisibility(View.GONE);
+                        simTwoLayout.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    simSelectionLayout.setVisibility(View.VISIBLE);
+                }
+            } catch (NullPointerException ignored) {}
+
+        } else {
+            simSelectionLayout.setVisibility(View.GONE);
+        }
+    }
+
+    private void changeSim(int s) {
+        if (s == 1) {
+            sim = 1;
+            simTwoButton.setChecked(false);
+        } else {
+            sim = 2;
+            simOneButton.setChecked(false);
+        }
     }
 
     private void checkPermission() {

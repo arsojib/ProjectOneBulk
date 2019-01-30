@@ -63,7 +63,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         addNumber(messageId, time, status, arrayList);
     }
 
-    public void addNumber(long messageId, long time, int status, ArrayList<Contact> arrayList) {
+    private void addNumber(long messageId, long time, int status, ArrayList<Contact> arrayList) {
         SQLiteDatabase db = this.getWritableDatabase();
         for (Contact contact : arrayList) {
             ContentValues contentValues = new ContentValues();
@@ -114,7 +114,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(updateSql);
         db.close();
     }
-
-
 
 }

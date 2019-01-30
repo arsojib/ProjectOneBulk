@@ -10,7 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 public class SmsListFragment extends Fragment {
 
     View view;
+    FrameLayout layout;
     ImageView back;
     RecyclerView recyclerView;
     TextView alert;
@@ -66,6 +69,7 @@ public class SmsListFragment extends Fragment {
         arrayList = new ArrayList<>();
         smsListAdapter = new SmsListAdapter(getActivity(), arrayList, clickListener);
         databaseHelper = new DatabaseHelper(getActivity());
+        layout = view.findViewById(R.id.layout);
         back = view.findViewById(R.id.back);
         alert = view.findViewById(R.id.alert_text);
         progressBar = view.findViewById(R.id.progress_bar);
@@ -80,8 +84,8 @@ public class SmsListFragment extends Fragment {
     }
 
     private void fragmentTransaction(Fragment fragment) {
-        FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.contain_main, fragment);
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.replace(R.id.layout, fragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

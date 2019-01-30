@@ -93,6 +93,7 @@
                     android:textColor="@color/colorPrimary"/>
 
                 <LinearLayout
+                    android:id="@+id/sim_selection_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/message_text"
@@ -101,12 +102,14 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/sim_one_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="5dp"
                         android:orientation="horizontal">
 
                         <RadioButton
+                            android:id="@+id/sim_one_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/colorPrimary"/>
@@ -122,12 +125,14 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/sim_two_layout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="5dp"
                         android:orientation="horizontal">
 
                         <RadioButton
+                            android:id="@+id/sim_two_button"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:buttonTint="@color/colorPrimary"/>

@@ -1,6 +1,7 @@
 package com.example.arsojib.bulksms.Service;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,9 +9,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
+import android.telephony.SubscriptionInfo;
+import android.telephony.SubscriptionManager;
 import android.widget.Toast;
 
 import com.example.arsojib.bulksms.DataFetch.DatabaseHelper;
@@ -127,6 +131,7 @@ public class SmsManagementService extends Service {
 
     private void send(String phone) {
         SmsManager sms = SmsManager.getDefault();
+
         // if message length is too long messages are divided
         List<String> messages = sms.divideMessage(message);
         for (String msg : messages) {
@@ -139,8 +144,24 @@ public class SmsManagementService extends Service {
     private void progressNotification() {
         notificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mBuilder = new NotificationCompat.Builder(this);
-        mBuilder.setContentTitle("SMS Sending")
+
+        String CHANNEL_ID = "bulk_sms";
+        CharSequence name = "bulk_sms_channel";
+        String Description = "bulk sms sending channel";
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            mChannel.setDescription(Description);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mChannel.setShowBadge(false);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        mBuilder = new NotificationCompat.Builder(this, CHANNEL_ID);
+        mBuilder.setContentTitle("Bulk SMS")
                 .setContentText("Send in progress...")
                 .setSmallIcon(R.drawable.message_white);
 

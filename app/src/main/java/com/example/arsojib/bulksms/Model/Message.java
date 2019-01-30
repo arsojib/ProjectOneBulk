@@ -13,6 +13,7 @@ public class Message {
     public Message(long id, String message, long time) {
         this.id = id;
         this.message = message;
+        this.time = time;
     }
 
     public long getId() {
