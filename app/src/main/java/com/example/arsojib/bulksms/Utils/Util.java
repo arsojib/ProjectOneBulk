@@ -67,6 +67,7 @@ public class Util {
             return true;
         }
     }
+
     public boolean checkPermissionReadContacts(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;
@@ -96,6 +97,34 @@ public class Util {
         }
     }
 
+    public boolean checkPermissionPhoneState(
+            final Context context) {
+        int currentAPIVersion = Build.VERSION.SDK_INT;
+        if (currentAPIVersion >= android.os.Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(context,
+                    Manifest.permission.READ_PHONE_STATE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(
+                        (Activity) context,
+                        android.Manifest.permission.READ_PHONE_STATE)) {
+                    showDialog("Read Contacts", context,
+                            android.Manifest.permission.READ_PHONE_STATE);
+
+                } else {
+                    ActivityCompat
+                            .requestPermissions(
+                                    (Activity) context,
+                                    new String[] { android.Manifest.permission.READ_PHONE_STATE },
+                                    MY_PERMISSIONS_REQUEST);
+                }
+                return false;
+            } else {
+                return true;
+            }
+
+        } else {
+            return true;
+        }
+    }
 
     private void showDialog(final String msg, final Context context,
                             final String permission) {

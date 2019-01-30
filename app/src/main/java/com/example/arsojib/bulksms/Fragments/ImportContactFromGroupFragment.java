@@ -67,7 +67,7 @@ public class ImportContactFromGroupFragment extends Fragment {
     }
 
     private void getData() {
-        arrayList = (ArrayList<Contact>) getArguments().getSerializable("contacts");
+        arrayList.addAll((ArrayList<Contact>) getArguments().getSerializable("contacts"));
         notifyChange();
     }
 

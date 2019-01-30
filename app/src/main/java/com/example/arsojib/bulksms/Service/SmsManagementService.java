@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
@@ -35,7 +36,7 @@ public class SmsManagementService extends Service {
     ArrayList<Contact> arrayList;
     String message;
     long messageId;
-    int ID, sendCount = 0;
+    int ID, sim, sendCount = 0;
 
     @Override
     public void onCreate() {
@@ -63,15 +64,31 @@ public class SmsManagementService extends Service {
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         s = "Generic Failure Error";
+                        notificationUpdate();
+                        intent.putExtra("status", 0);
+                        intent.putExtra("number", "0");
+                        sendBroadcast(intent);
                         break;
                     case SmsManager.RESULT_ERROR_NO_SERVICE:
                         s = "Error : No Service Available";
+                        notificationUpdate();
+                        intent.putExtra("status", 0);
+                        intent.putExtra("number", "0");
+                        sendBroadcast(intent);
                         break;
                     case SmsManager.RESULT_ERROR_NULL_PDU:
                         s = "Error : Null PDU";
+                        notificationUpdate();
+                        intent.putExtra("status", 0);
+                        intent.putExtra("number", "0");
+                        sendBroadcast(intent);
                         break;
                     case SmsManager.RESULT_ERROR_RADIO_OFF:
                         s = "Error : Radio is off";
+                        notificationUpdate();
+                        intent.putExtra("status", 0);
+                        intent.putExtra("number", "0");
+                        sendBroadcast(intent);
                         break;
                     default:
                         break;
@@ -107,6 +124,7 @@ public class SmsManagementService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         arrayList = (ArrayList<Contact>) intent.getSerializableExtra("contact_list");
         message = intent.getStringExtra("message");
+        sim = intent.getIntExtra("sim", 0);
         messageId = System.currentTimeMillis();
         long time = System.currentTimeMillis();
         databaseHelper.addMessage(messageId, message, time, 0, arrayList);
@@ -130,8 +148,17 @@ public class SmsManagementService extends Service {
     }
 
     private void send(String phone) {
-        SmsManager sms = SmsManager.getDefault();
-
+        SmsManager sms;
+        if (sim == 0) {
+            sms = SmsManager.getDefault();
+        } else {
+            if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+//                sms = SmsManager.getSmsManagerForSubscriptionId(sim);
+                sms = SmsManager.getDefault();
+            } else {
+                sms = SmsManager.getDefault();
+            }
+        }
         // if message length is too long messages are divided
         List<String> messages = sms.divideMessage(message);
         for (String msg : messages) {

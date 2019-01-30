@@ -15,6 +15,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.arsojib.bulksms.Activites.MainActivity;
+import com.example.arsojib.bulksms.Adapter.SmsNotSentAdapter;
 import com.example.arsojib.bulksms.Adapter.SmsSentAdapter;
 import com.example.arsojib.bulksms.DataFetch.DatabaseHelper;
 import com.example.arsojib.bulksms.Model.Contact;
@@ -32,7 +33,7 @@ public class SmsNotSentFragment extends Fragment {
     TextView alert, done;
 
     ArrayList<Contact> arrayList;
-    SmsSentAdapter smsSentAdapter;
+    SmsNotSentAdapter smsSentAdapter;
     DatabaseHelper databaseHelper;
 
     @Nullable
@@ -83,7 +84,7 @@ public class SmsNotSentFragment extends Fragment {
 
     private void initialComponent() {
         arrayList = new ArrayList<>();
-        smsSentAdapter = new SmsSentAdapter(getActivity(), arrayList);
+        smsSentAdapter = new SmsNotSentAdapter(getActivity(), arrayList);
         databaseHelper = new DatabaseHelper(getActivity());
         progressBar = view.findViewById(R.id.progress_bar);
         selectAll = view.findViewById(R.id.select_all);

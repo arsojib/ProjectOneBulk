@@ -12,7 +12,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorPrimary">
+            android:background="@color/colorWhite">
 
             <CheckBox
                 android:id="@+id/select_all"
@@ -29,7 +29,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_toEndOf="@+id/select_all"
                 android:text="Select number to send again"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlack"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
@@ -42,7 +42,7 @@
                 android:gravity="center"
                 android:layout_marginEnd="10dp"
                 android:text="Done"
-                android:textColor="@color/colorWhite"
+                android:textColor="@color/colorBlack"
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
