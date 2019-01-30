@@ -194,6 +194,8 @@ public class MessageFragment extends Fragment {
             }
         };
 
+        sentCount.setText("Sent: " + smsCount + " / " + "Total: " + total);
+
         getContext().registerReceiver(broadcastReceiver, new IntentFilter("SMS_MANAGEMENT"));
 
         close.setOnClickListener(new View.OnClickListener() {

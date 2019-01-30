@@ -16,7 +16,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:padding="10dp"
-        android:src="@drawable/close"
+        android:src="@drawable/close_orange"
         android:layout_gravity="end"/>
 
     <LinearLayout
@@ -26,9 +26,10 @@
         android:layout_margin="10dp"
         android:orientation="vertical">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,22 +39,14 @@
                 android:textSize="16sp"
                 android:textStyle="bold" />
 
-            <LinearLayout
+            <TextView
+                android:id="@+id/sent_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end|center"
-                android:orientation="horizontal">
+                android:text="Sent: 0 /  Total: 0"
+                android:textSize="12sp" />
 
-                <TextView
-                    android:id="@+id/sent_count"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Sent: 45  /  Total: 144"
-                    android:textSize="12sp" />
-
-            </LinearLayout>
-
-        </FrameLayout>
+        </LinearLayout>
 
         <ProgressBar
             android:id="@+id/progress_bar"

@@ -30,7 +30,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String STATUS = "status";
     private static final String TIME = "time";
 
-    private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " ( " + ID + " BIGINT, " + MESSAGE + " VARCHAR " + ");";
+    private static final String CREATE_TABLE_MESSAGES = "CREATE TABLE " + TABLE_MESSAGES + " ( " + ID + " BIGINT, " + MESSAGE + " VARCHAR, " + TIME + " BIGINT " + ");";
     private static final String CREATE_TABLE_NUMBERS = "CREATE TABLE " + TABLE_NUMBERS + " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + MESSAGE_ID + " BIGINT, " + NUMBER + " VARCHAR, "  + STATUS + " INTEGER, " + TIME + " BIGINT " + ");";
 
     public DatabaseHelper(Context context) {
@@ -95,7 +95,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Contact> getAllNumberUsingMessageID(long messageId, int status) {
         ArrayList<Contact> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM " + TABLE_MESSAGES + " WHERE " + MESSAGE_ID + "=" + messageId + " AND " + STATUS + "=" + status + ";";
+        String sql = "SELECT * FROM " + TABLE_NUMBERS + " WHERE " + MESSAGE_ID + "=" + messageId + " AND " + STATUS + "=" + status + ";";
         Cursor c = db.rawQuery(sql, null);
         if (c.moveToFirst()) {
             do {

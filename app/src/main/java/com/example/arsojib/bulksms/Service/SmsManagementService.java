@@ -50,11 +50,12 @@ public class SmsManagementService extends Service {
                     case Activity.RESULT_OK:
                         s = "Message Sent Successfully !!";
                         notificationUpdate();
+                        String number = ((SmsManagementService) arg0).arrayList.get(0).getNumber();
                         intent.putExtra("status", 1);
-                        intent.putExtra("number", "");
+                        intent.putExtra("number", number);
                         sendBroadcast(intent);
                         long time = System.currentTimeMillis();
-                        databaseHelper.setMessageUpdate(messageId, "", 1, time);
+                        databaseHelper.setMessageUpdate(messageId, number, 1, time);
                         break;
                     case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                         s = "Generic Failure Error";
@@ -81,11 +82,12 @@ public class SmsManagementService extends Service {
                 String s = "Message Not Delivered";
                 switch (getResultCode()) {
                     case Activity.RESULT_OK:
+                        String number = ((SmsManagementService) arg0).arrayList.get(0).getNumber();
                         intent.putExtra("status", 2);
-                        intent.putExtra("number", "");
+                        intent.putExtra("number", number);
                         sendBroadcast(intent);
                         long time = System.currentTimeMillis();
-                        databaseHelper.setMessageUpdate(messageId, "", 2, time);
+                        databaseHelper.setMessageUpdate(messageId, number, 2, time);
                         s = "Message Delivered Successfully";
                         break;
                     case Activity.RESULT_CANCELED:

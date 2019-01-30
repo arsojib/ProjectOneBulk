@@ -75,7 +75,7 @@ public class SmsListFragment extends Fragment {
     }
 
     private void getData() {
-        arrayList = databaseHelper.getAllMessage();
+        arrayList.addAll(databaseHelper.getAllMessage());
         notifyChange();
     }
 

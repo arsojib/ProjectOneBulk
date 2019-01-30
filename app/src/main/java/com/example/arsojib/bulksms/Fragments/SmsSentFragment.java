@@ -43,7 +43,7 @@ public class SmsSentFragment extends Fragment {
     }
 
     private void getData() {
-        arrayList = databaseHelper.getAllNumberUsingMessageID(Util.smsId, 1);
+        arrayList.addAll(databaseHelper.getAllNumberUsingMessageID(Util.smsId, 1));
         notifyChange();
     }
 

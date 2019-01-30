@@ -77,7 +77,7 @@ public class SmsNotSentFragment extends Fragment {
     }
 
     private void getData() {
-        arrayList = databaseHelper.getAllNumberUsingMessageID(Util.smsId, 0);
+        arrayList.addAll(databaseHelper.getAllNumberUsingMessageID(Util.smsId, 0));
         notifyChange();
     }
 
