@@ -34,7 +34,9 @@ public class ScheduleExactJobService extends Job {
             intent.putExtra("contact_list", contacts);
             intent.putExtra("message", message);
             intent.putExtra("sim", "0");
+            intent.putExtra("old", false);
             getContext().startService(intent);
+            databaseHelper.deleteSingleSchedule(id);
         }
 
         return Result.SUCCESS;
@@ -44,8 +46,9 @@ public class ScheduleExactJobService extends Job {
         PersistableBundleCompat extras = new PersistableBundleCompat();
         extras.putLong("id", message.getId());
         extras.putString("message", message.getMessage());
+        long time = System.currentTimeMillis() - message.getTime();
         new JobRequest.Builder(ScheduleExactJobService.TAG)
-                .setExact(message.getTime())
+                .setExact(time)
                 .setExtras(extras)
                 .build()
                 .schedule();
@@ -55,8 +58,9 @@ public class ScheduleExactJobService extends Job {
         PersistableBundleCompat extras = new PersistableBundleCompat();
         extras.putLong("id", message.getId());
         extras.putString("message", message.getMessage());
+        long time = System.currentTimeMillis() - message.getTime();
         new JobRequest.Builder(ScheduleExactJobService.TAG)
-                .setExact(message.getTime() + TimeUnit.MINUTES.toMillis(20))
+                .setExact(time + TimeUnit.MINUTES.toMillis(20))
                 .setExtras(extras)
                 .build()
                 .schedule();

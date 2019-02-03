@@ -25,6 +25,7 @@ public class Util {
 
     private final int MY_PERMISSIONS_REQUEST = 123;
     public static long smsId = 0;
+    public static String smsMessage = "";
 
     public static String getDateFromLong(long val) {
         Date date=new Date(val);

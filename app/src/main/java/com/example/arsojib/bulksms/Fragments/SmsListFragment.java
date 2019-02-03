@@ -48,6 +48,7 @@ public class SmsListFragment extends Fragment {
             @Override
             public void onItemClick(int position) {
                 Util.smsId = arrayList.get(position).getId();
+                Util.smsMessage = arrayList.get(position).getMessage();
                 fragmentTransaction(new SmsHistoryFragment());
             }
         };

@@ -36,6 +36,7 @@ public class SmsManagementService extends Service {
     ArrayList<Contact> arrayList;
     String message;
     long messageId;
+    boolean isOld;
     int ID, sim, sendCount = 0;
 
     @Override
@@ -125,9 +126,14 @@ public class SmsManagementService extends Service {
         arrayList = (ArrayList<Contact>) intent.getSerializableExtra("contact_list");
         message = intent.getStringExtra("message");
         sim = intent.getIntExtra("sim", 5);
+        isOld = intent.getBooleanExtra("old", false);
         messageId = System.currentTimeMillis();
         long time = System.currentTimeMillis();
-        databaseHelper.addMessage(messageId, message, time, 0, arrayList);
+        if (!isOld) {
+            databaseHelper.addMessage(messageId, message, time, 0, arrayList);
+        } else {
+            messageId = intent.getLongExtra("message_id", 0);
+        }
         progressNotification();
         sendMySMS();
         return START_STICKY;
@@ -153,7 +159,8 @@ public class SmsManagementService extends Service {
             sms = SmsManager.getDefault();
         } else {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-                sms = SmsManager.getSmsManagerForSubscriptionId(sim);
+//                sms = SmsManager.getSmsManagerForSubscriptionId(sim);
+                sms = SmsManager.getDefault();
             } else {
                 sms = SmsManager.getDefault();
             }

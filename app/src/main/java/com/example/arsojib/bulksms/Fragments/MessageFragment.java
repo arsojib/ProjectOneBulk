@@ -305,6 +305,7 @@ public class MessageFragment extends Fragment {
         intent.putExtra("contact_list", contacts);
         intent.putExtra("message", message);
         intent.putExtra("sim", sim);
+        intent.putExtra("old", false);
         getActivity().startService(intent);
         showMessageSentProgress(((MainActivity) getContext()).arrayList.size());
         clearHistory();
@@ -313,7 +314,6 @@ public class MessageFragment extends Fragment {
     private void clearHistory() {
         ((MainActivity) getContext()).arrayList.clear();
         messageText.setText("");
-        smsCount = 0;
         ((MainActivity) getContext()).contactImportCompleteListener.onImportCompleteCount(0);
     }
 
@@ -323,8 +323,10 @@ public class MessageFragment extends Fragment {
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.sms_sending_progress_layout);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
 
+        smsCount = 0;
+        count.setText(0 + "");
         ImageView close = dialog.findViewById(R.id.close);
         final TextView sentCount = dialog.findViewById(R.id.sent_count);
         final ProgressBar progressBar = dialog.findViewById(R.id.progress_bar);

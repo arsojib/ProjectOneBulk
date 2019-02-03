@@ -38,7 +38,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String CREATE_TABLE_NUMBERS = "CREATE TABLE " + TABLE_NUMBERS + " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + MESSAGE_ID + " BIGINT, " + NUMBER + " VARCHAR, "  + STATUS + " INTEGER, " + TIME + " BIGINT " + ");";
 
     private static final String CREATE_TABLE_SCHEDULE = "CREATE TABLE " + TABLE_SCHEDULE + " ( " + ID + " BIGINT, " + MESSAGE + " VARCHAR, " + TIME + " BIGINT, " + TOTAL + " INTEGER " + ");";
-    private static final String CREATE_TABLE_SCHEDULE_NUMBER = "CREATE TABLE " + TABLE_SCHEDULE_NUMBER + " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + SCHEDULE_ID + " BIGINT, " + NUMBER + " VARCHAR, " + TIME + " BIGINT " + ");";
+    private static final String CREATE_TABLE_SCHEDULE_NUMBER = "CREATE TABLE " + TABLE_SCHEDULE_NUMBER + " ( " + ID + " INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " + SCHEDULE_ID + " BIGINT, " + NUMBER + " VARCHAR, " + STATUS + " INTEGER, " + TIME + " BIGINT " + ");";
 
     public DatabaseHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -105,8 +105,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         for (Contact contact : arrayList) {
             ContentValues contentValues = new ContentValues();
-            contentValues.put(MESSAGE_ID, scheduleId);
+            contentValues.put(SCHEDULE_ID, scheduleId);
             contentValues.put(NUMBER, contact.getNumber());
+            contentValues.put(STATUS, 0);
             contentValues.put(TIME, time);
             db.insert(TABLE_SCHEDULE_NUMBER, null, contentValues);
         }
@@ -179,8 +180,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void setMessageUpdate(long messageId, String number, int status, long time) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String updateSql = "UPDATE " + TABLE_NUMBERS + " SET " + STATUS + "=" + status + "," + TIME + "=" + time + " WHERE " + NUMBER + "=" + number + " AND " + MESSAGE_ID + "=" + messageId + ";";
-        db.execSQL(updateSql);
+
+        ContentValues cv = new ContentValues();
+        cv.put(STATUS, status);
+        cv.put(TIME, time);
+        db.update(TABLE_NUMBERS, cv, NUMBER + " = "+ NUMBER + " AND " + MESSAGE_ID + " = " + messageId , null);
         db.close();
     }
 

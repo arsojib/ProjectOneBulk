@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -57,6 +58,22 @@ public class ImportContactFragment extends Fragment {
 
         initialComponent();
         getContactList();
+
+        selectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    for (int i = 0; i < arrayList.size(); i++) {
+                        arrayList.get(i).setCheck(true);
+                    }
+                } else {
+                    for (int i = 0; i < arrayList.size(); i++) {
+                        arrayList.get(i).setCheck(false);
+                    }
+                }
+                notifyChange();
+            }
+        });
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

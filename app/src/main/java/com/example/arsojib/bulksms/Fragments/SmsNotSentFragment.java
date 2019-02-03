@@ -1,5 +1,6 @@
 package com.example.arsojib.bulksms.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -20,6 +21,7 @@ import com.example.arsojib.bulksms.Adapter.SmsSentAdapter;
 import com.example.arsojib.bulksms.DataFetch.DatabaseHelper;
 import com.example.arsojib.bulksms.Model.Contact;
 import com.example.arsojib.bulksms.R;
+import com.example.arsojib.bulksms.Service.SmsManagementService;
 import com.example.arsojib.bulksms.Utils.Util;
 
 import java.util.ArrayList;
@@ -69,7 +71,8 @@ public class SmsNotSentFragment extends Fragment {
                         contacts.add(new Contact("", arrayList.get(i).getNumber(), false));
                     }
                 }
-                ((MainActivity) getContext()).contactImportCompleteListener.onImportComplete(contacts);
+                sendMySMS(contacts);
+                ((MainActivity) getContext()).contactNotSentImportCompleteListener.onImportCompleteCount(contacts.size());
                 getActivity().onBackPressed();
             }
         });
@@ -102,6 +105,16 @@ public class SmsNotSentFragment extends Fragment {
         } else {
             alert.setVisibility(View.GONE);
         }
+    }
+
+    private void sendMySMS(ArrayList<Contact> contacts) {
+        Intent intent = new Intent(getActivity(), SmsManagementService.class);
+        intent.putExtra("contact_list", contacts);
+        intent.putExtra("message", Util.smsMessage);
+        intent.putExtra("message_id", Util.smsId);
+        intent.putExtra("sim", "5");
+        intent.putExtra("old", true);
+        getActivity().startService(intent);
     }
 
 }

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
     ImageView drawer;
     DrawerLayout drawerLayout;
 
-    public ContactImportCompleteListener contactImportCompleteListener, contactImportCompleteCountListener;
+    public ContactImportCompleteListener contactImportCompleteListener, contactImportCompleteCountListener, contactNotSentImportCompleteListener;
 
     public ArrayList<Contact> arrayList;
     private int[] tabIcons = {
