@@ -124,7 +124,7 @@ public class SmsManagementService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         arrayList = (ArrayList<Contact>) intent.getSerializableExtra("contact_list");
         message = intent.getStringExtra("message");
-        sim = intent.getIntExtra("sim", 0);
+        sim = intent.getIntExtra("sim", 5);
         messageId = System.currentTimeMillis();
         long time = System.currentTimeMillis();
         databaseHelper.addMessage(messageId, message, time, 0, arrayList);
@@ -149,12 +149,11 @@ public class SmsManagementService extends Service {
 
     private void send(String phone) {
         SmsManager sms;
-        if (sim == 0) {
+        if (sim == 5) {
             sms = SmsManager.getDefault();
         } else {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-//                sms = SmsManager.getSmsManagerForSubscriptionId(sim);
-                sms = SmsManager.getDefault();
+                sms = SmsManager.getSmsManagerForSubscriptionId(sim);
             } else {
                 sms = SmsManager.getDefault();
             }

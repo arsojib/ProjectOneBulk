@@ -26,6 +26,11 @@ public class Message {
         this.count = count;
     }
 
+    public Message(long id, long time) {
+        this.id = id;
+        this.time = time;
+    }
+
     public long getId() {
         return id;
     }

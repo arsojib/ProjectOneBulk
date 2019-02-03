@@ -22,12 +22,6 @@ public class SmsHistoryFragment extends Fragment {
     CustomSwipeDisableViewPager viewPager;
     TabLayout tabLayout;
 
-    private int[] tabIcons = {
-            R.drawable.not_sent,
-            R.drawable.sent,
-            R.drawable.delivered
-    };
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,8 +35,8 @@ public class SmsHistoryFragment extends Fragment {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getActivity().onBackPressed();
-                getChildFragmentManager().popBackStack();
+                getActivity().onBackPressed();
+//                getChildFragmentManager().popBackStack();
             }
         });
 
@@ -67,9 +61,9 @@ public class SmsHistoryFragment extends Fragment {
 
     private void setupTabIcons() {
         try {
-            tabLayout.getTabAt(0).setIcon(tabIcons[0]);
-            tabLayout.getTabAt(1).setIcon(tabIcons[1]);
-            tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+            tabLayout.getTabAt(0).setText("Not Sent");
+            tabLayout.getTabAt(1).setText("Sent");
+            tabLayout.getTabAt(2).setText("Delivered");
         } catch (RuntimeException ignored) {
         }
     }

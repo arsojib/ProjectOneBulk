@@ -44,13 +44,16 @@ import com.example.arsojib.bulksms.Activites.MainActivity;
 import com.example.arsojib.bulksms.DataFetch.DatabaseHelper;
 import com.example.arsojib.bulksms.Listener.ContactImportCompleteListener;
 import com.example.arsojib.bulksms.Model.Contact;
+import com.example.arsojib.bulksms.Model.Message;
 import com.example.arsojib.bulksms.R;
+import com.example.arsojib.bulksms.Service.ScheduleExactJobService;
 import com.example.arsojib.bulksms.Service.SmsManagementService;
 import com.example.arsojib.bulksms.Utils.Util;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Random;
 
 import static android.Manifest.permission.READ_PHONE_STATE;
 import static android.Manifest.permission.SEND_SMS;
@@ -66,7 +69,7 @@ public class MessageFragment extends Fragment {
 
     String message = "";
     final int REQUEST_SMS = 111, REQUEST_PHONE_STATE = 112;
-    int smsCount = 0, sim = 0;
+    int smsCount = 0, sim = 5;
     boolean hasSim = false;
 
     @Nullable
@@ -112,8 +115,6 @@ public class MessageFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     changeSim(1);
-                } else {
-                    sim = 0;
                 }
             }
         });
@@ -133,18 +134,18 @@ public class MessageFragment extends Fragment {
                 if (hasSim) {
                     if (simOneButton.isChecked() || simTwoButton.isChecked()) {
                         if (simOneButton.isChecked()) {
-                            sim = 1;
+                            sim = 0;
                         } else if (simTwoButton.isChecked()) {
-                            sim = 2;
+                            sim = 1;
                         }
                     }
-                    if (sim == 0) {
+                    if (sim == 5) {
                         Toast.makeText(getContext(), "Please Select a Sim.", Toast.LENGTH_SHORT).show();
                     } else {
                         send();
                     }
                 } else {
-                    sim = 0;
+                    sim = 5;
                     send();
                 }
             }
@@ -153,7 +154,7 @@ public class MessageFragment extends Fragment {
         addToSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                setSchedule();
             }
         });
 
@@ -165,7 +166,7 @@ public class MessageFragment extends Fragment {
         if (((MainActivity) getContext()).arrayList.size() != 0 && !message.equals("")) {
             checkPermission();
         } else {
-            Toast.makeText(getContext(), "Please add contact first.", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Please add contact & message first.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -312,6 +313,7 @@ public class MessageFragment extends Fragment {
     private void clearHistory() {
         ((MainActivity) getContext()).arrayList.clear();
         messageText.setText("");
+        smsCount = 0;
         ((MainActivity) getContext()).contactImportCompleteListener.onImportCompleteCount(0);
     }
 
@@ -330,10 +332,6 @@ public class MessageFragment extends Fragment {
         BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-//                int status;
-//                String number;
-//                status = intent.getIntExtra("status", 0);
-//                number = intent.getStringExtra("number");
                 smsCount++;
                 if (smsCount >= total) {
                     sentCount.setText("Sent: " + total + " / " + "Total: " + total);
@@ -359,9 +357,9 @@ public class MessageFragment extends Fragment {
         dialog.show();
     }
 
-    int mYear, mMonth, mDay, mHour, mMinute;
+    int mYear = 0, mMonth = 0, mDay = 0, mHour = 0, mMinute = 0;
 
-    private void setSchedule(final int total) {
+    private void setSchedule() {
         final Dialog dialog = new Dialog(getActivity());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
@@ -371,30 +369,28 @@ public class MessageFragment extends Fragment {
 
         final DatabaseHelper databaseHelper = new DatabaseHelper(getActivity());
         FrameLayout addDate, addTime, addToSchedule;
+        final TextView date, time;
         addDate = dialog.findViewById(R.id.add_date);
         addTime = dialog.findViewById(R.id.add_time);
         addToSchedule = dialog.findViewById(R.id.add_to_schedule);
+        date = dialog.findViewById(R.id.date);
+        time = dialog.findViewById(R.id.time);
 
         addDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
-                mYear = c.get(Calendar.YEAR);
-                mMonth = c.get(Calendar.MONTH);
-                mDay = c.get(Calendar.DAY_OF_MONTH);
-
-
                 DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
                         new DatePickerDialog.OnDateSetListener() {
-
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
-
-//                                txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
-
+                                mYear = year;
+                                mMonth = monthOfYear;
+                                mDay = dayOfMonth;
+                                date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                             }
-                        }, mYear, mMonth, mDay);
+                        }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.show();
             }
         });
@@ -403,20 +399,16 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
-                mHour = c.get(Calendar.HOUR_OF_DAY);
-                mMinute = c.get(Calendar.MINUTE);
-
-                // Launch Time Picker Dialog
                 TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
                         new TimePickerDialog.OnTimeSetListener() {
-
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay,
                                                   int minute) {
-
-//                                txtTime.setText(hourOfDay + ":" + minute);
+                                mHour = hourOfDay;
+                                mMinute = minute;
+                                time.setText(hourOfDay + ":" + minute);
                             }
-                        }, mHour, mMinute, false);
+                        }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), false);
                 timePickerDialog.show();
             }
         });
@@ -427,9 +419,18 @@ public class MessageFragment extends Fragment {
                 if (mYear != 0 && mMonth != 0 && mDay != 0 && mHour != 0 && mMinute != 0) {
                     String dateTime = mYear + "-" + mMonth + "-" + mDay + " " + mHour + ":" + mMinute + ":00";
                     long time = Util.getLongFromDate(dateTime);
+                    message = messageText.getText().toString().trim();
                     if (time != 0) {
-                        databaseHelper.addSchedule(time, messageText.getText().toString(), time, ((MainActivity) getContext()).arrayList);
-                        dialog.dismiss();
+                        if (((MainActivity) getContext()).arrayList.size() != 0 && !message.equals("")) {
+                            databaseHelper.addSchedule(time, messageText.getText().toString(), time, ((MainActivity) getContext()).arrayList);
+                            ScheduleExactJobService.scheduleExactJob(new Message(time, messageText.getText().toString(), time));
+                            Toast.makeText(getContext(), "Schedule added successfully.", Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        } else {
+                            Toast.makeText(getContext(), "Please add contact & message first.", Toast.LENGTH_SHORT).show();
+                        }
+                    } else {
+                        Toast.makeText(getContext(), "Please select schedule date and time.", Toast.LENGTH_SHORT).show();
                     }
                 }
             }

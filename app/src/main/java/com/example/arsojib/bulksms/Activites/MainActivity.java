@@ -1,6 +1,5 @@
 package com.example.arsojib.bulksms.Activites;
 
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -20,6 +19,8 @@ import com.example.arsojib.bulksms.Utils.CustomSwipeDisableViewPager;
 import com.example.arsojib.bulksms.Utils.ViewPagerAdapter;
 
 import java.util.ArrayList;
+
+import static com.example.arsojib.bulksms.Service.ScheduleJobService.schedulePeriodicJob;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
         setupTabIcons();
+//        schedulePeriodicJob();
 
         drawer.setOnClickListener(new View.OnClickListener() {
             @Override
