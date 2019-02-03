@@ -10,8 +10,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by AR Sajib on 1/27/2019.
@@ -27,6 +31,18 @@ public class Util {
         SimpleDateFormat df2 = new SimpleDateFormat("hh:mm a dd MMM yyyy");
         String dateText = df2.format(date);
         return dateText;
+    }
+
+    public static long getLongFromDate(String dateTime) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH);
+        Date date;
+        try {
+            date = format.parse(dateTime);
+        } catch (ParseException e) {
+            return 0;
+        }
+        long pTime = date.getTime();
+        return pTime;
     }
 
     public static String getStatus(int val) {

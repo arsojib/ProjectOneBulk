@@ -1,7 +1,9 @@
 package com.example.arsojib.bulksms.Fragments;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -27,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.CompoundButton;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -34,15 +37,19 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.arsojib.bulksms.Activites.MainActivity;
+import com.example.arsojib.bulksms.DataFetch.DatabaseHelper;
 import com.example.arsojib.bulksms.Listener.ContactImportCompleteListener;
 import com.example.arsojib.bulksms.Model.Contact;
 import com.example.arsojib.bulksms.R;
 import com.example.arsojib.bulksms.Service.SmsManagementService;
+import com.example.arsojib.bulksms.Utils.Util;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import static android.Manifest.permission.READ_PHONE_STATE;
@@ -55,7 +62,7 @@ public class MessageFragment extends Fragment {
     RadioButton simOneButton, simTwoButton;
     TextView count, messageLength;
     EditText messageText;
-    FrameLayout sendMessage;
+    FrameLayout sendMessage, addToSchedule;
 
     String message = "";
     final int REQUEST_SMS = 111, REQUEST_PHONE_STATE = 112;
@@ -143,6 +150,13 @@ public class MessageFragment extends Fragment {
             }
         });
 
+        addToSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         return view;
     }
 
@@ -165,6 +179,7 @@ public class MessageFragment extends Fragment {
         messageText = view.findViewById(R.id.message_text);
         messageLength = view.findViewById(R.id.message_length);
         sendMessage = view.findViewById(R.id.send_message);
+        addToSchedule = view.findViewById(R.id.add_to_schedule);
     }
 
     private void simCheck() {
@@ -338,6 +353,85 @@ public class MessageFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+    }
+
+    int mYear, mMonth, mDay, mHour, mMinute;
+
+    private void setSchedule(final int total) {
+        final Dialog dialog = new Dialog(getActivity());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.setContentView(R.layout.add_to_schedule_layout);
+        dialog.setCancelable(false);
+
+        final DatabaseHelper databaseHelper = new DatabaseHelper(getActivity());
+        FrameLayout addDate, addTime, addToSchedule;
+        addDate = dialog.findViewById(R.id.add_date);
+        addTime = dialog.findViewById(R.id.add_time);
+        addToSchedule = dialog.findViewById(R.id.add_to_schedule);
+
+        addDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mYear = c.get(Calendar.YEAR);
+                mMonth = c.get(Calendar.MONTH);
+                mDay = c.get(Calendar.DAY_OF_MONTH);
+
+
+                DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(),
+                        new DatePickerDialog.OnDateSetListener() {
+
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+
+//                                txtDate.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+
+                            }
+                        }, mYear, mMonth, mDay);
+                datePickerDialog.show();
+            }
+        });
+
+        addTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                mHour = c.get(Calendar.HOUR_OF_DAY);
+                mMinute = c.get(Calendar.MINUTE);
+
+                // Launch Time Picker Dialog
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(),
+                        new TimePickerDialog.OnTimeSetListener() {
+
+                            @Override
+                            public void onTimeSet(TimePicker view, int hourOfDay,
+                                                  int minute) {
+
+//                                txtTime.setText(hourOfDay + ":" + minute);
+                            }
+                        }, mHour, mMinute, false);
+                timePickerDialog.show();
+            }
+        });
+
+        addToSchedule.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mYear != 0 && mMonth != 0 && mDay != 0 && mHour != 0 && mMinute != 0) {
+                    String dateTime = mYear + "-" + mMonth + "-" + mDay + " " + mHour + ":" + mMinute + ":00";
+                    long time = Util.getLongFromDate(dateTime);
+                    if (time != 0) {
+                        databaseHelper.addSchedule(time, messageText.getText().toString(), time, ((MainActivity) getContext()).arrayList);
+                        dialog.dismiss();
+                    }
+                }
             }
         });
 
