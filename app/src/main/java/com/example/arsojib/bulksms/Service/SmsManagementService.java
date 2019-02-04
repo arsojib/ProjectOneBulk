@@ -16,6 +16,7 @@ import android.support.v4.app.NotificationCompat;
 import android.telephony.SmsManager;
 import android.telephony.SubscriptionInfo;
 import android.telephony.SubscriptionManager;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.example.arsojib.bulksms.DataFetch.DatabaseHelper;
@@ -39,11 +40,14 @@ public class SmsManagementService extends Service {
     boolean isOld;
     int ID, sim, sendCount = 0;
 
+    String TAG = "SmsManagementService";
+
     @Override
     public void onCreate() {
         super.onCreate();
         final Intent intent = new Intent();
         intent.setAction("SMS_MANAGEMENT");
+        Log.d(TAG, "service start");
 
         databaseHelper = new DatabaseHelper(this);
         sentStatusReceiver = new BroadcastReceiver() {
@@ -145,6 +149,7 @@ public class SmsManagementService extends Service {
     }
 
     public void sendMySMS() {
+        Log.d(TAG, "send count " + arrayList.size());
         for (int i = 0; i < arrayList.size(); i++) {
             String phone;
             phone = arrayList.get(i).getNumber();
@@ -154,6 +159,7 @@ public class SmsManagementService extends Service {
     }
 
     private void send(String phone) {
+        Log.d(TAG, "service start");
         SmsManager sms;
         if (sim == 5) {
             sms = SmsManager.getDefault();
@@ -172,6 +178,7 @@ public class SmsManagementService extends Service {
             PendingIntent deliveredIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
             sms.sendTextMessage(phone, null, msg, sentIntent, deliveredIntent);
         }
+        Log.d(TAG, "send sent " + message);
     }
 
     private void progressNotification() {

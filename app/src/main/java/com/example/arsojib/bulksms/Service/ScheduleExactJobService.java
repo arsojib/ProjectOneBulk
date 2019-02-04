@@ -33,13 +33,12 @@ public class ScheduleExactJobService extends Job {
         DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
         long id = params.getExtras().getLong("id", 0);
         String message = params.getExtras().getString("message", "");
-        ArrayList<Contact> contacts = new ArrayList<>();
         if (id != 0 && !message.equals("")) {
-            contacts.addAll(databaseHelper.getAllScheduleNumberUsingScheduleID(id));
+            ArrayList<Contact> contacts = new ArrayList<>(databaseHelper.getAllScheduleNumberUsingScheduleID(id));
             Intent intent = new Intent(getContext(), SmsManagementService.class);
             intent.putExtra("contact_list", contacts);
             intent.putExtra("message", message);
-            intent.putExtra("sim", "0");
+            intent.putExtra("sim", 5);
             intent.putExtra("old", false);
             getContext().startService(intent);
             databaseHelper.deleteSingleSchedule(id);

@@ -179,7 +179,7 @@ public class ImportContactGroupFragment extends Fragment {
             while (phones.moveToNext()) {
                 String name, number;
                 name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)).replaceAll(" ", "");
                 contacts.add(new Contact(name, number, false));
             }
             arrayList.get(position).setArrayList(contacts);

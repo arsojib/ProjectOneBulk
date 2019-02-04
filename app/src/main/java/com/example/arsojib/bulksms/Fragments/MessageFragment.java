@@ -54,6 +54,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import static android.Manifest.permission.READ_PHONE_STATE;
 import static android.Manifest.permission.SEND_SMS;
@@ -315,6 +316,7 @@ public class MessageFragment extends Fragment {
         ((MainActivity) getContext()).arrayList.clear();
         messageText.setText("");
         ((MainActivity) getContext()).contactImportCompleteListener.onImportCompleteCount(0);
+        count.setText(0 + "");
     }
 
     private void showMessageSentProgress(final int total) {
@@ -340,7 +342,7 @@ public class MessageFragment extends Fragment {
                     progressBar.setProgress(100);
                 } else {
                     sentCount.setText("Sent: " + smsCount + " / " + "Total: " + total);
-                    progressBar.setProgress((int) (smsCount / total) * 100);
+                    progressBar.setProgress((int) ((smsCount / total) * 100));
                 }
             }
         };
@@ -367,7 +369,7 @@ public class MessageFragment extends Fragment {
         dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.MATCH_PARENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setContentView(R.layout.add_to_schedule_layout);
-        dialog.setCancelable(false);
+        dialog.setCancelable(true);
 
         final DatabaseHelper databaseHelper = new DatabaseHelper(getActivity());
         FrameLayout addDate, addTime, addToSchedule;
@@ -393,6 +395,7 @@ public class MessageFragment extends Fragment {
                                 date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                             }
                         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+                datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 datePickerDialog.show();
             }
         });
@@ -410,7 +413,7 @@ public class MessageFragment extends Fragment {
                                 mMinute = minute;
                                 time.setText(hourOfDay + ":" + minute);
                             }
-                        }, c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE), false);
+                        }, c.get(Calendar.HOUR_OF_DAY) + 1, c.get(Calendar.MINUTE), false);
                 timePickerDialog.show();
             }
         });
@@ -418,18 +421,23 @@ public class MessageFragment extends Fragment {
         addToSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mYear != 0 && mMonth != 0 && mDay != 0 && mHour != 0 && mMinute != 0) {
+                if (mYear != 0 && mMonth != 0 && mDay != 0) {
                     String dateTime = mYear + "-" + mMonth + "-" + mDay + " " + mHour + ":" + mMinute + ":00";
                     long time = Util.getLongFromDate(dateTime);
                     message = messageText.getText().toString().trim();
                     if (time != 0) {
-                        if (((MainActivity) getContext()).arrayList.size() != 0 && !message.equals("")) {
-                            databaseHelper.addSchedule(time, messageText.getText().toString(), time, ((MainActivity) getContext()).arrayList);
-                            ScheduleExactJobService.scheduleExactJob(new Message(time, messageText.getText().toString(), time));
-                            Toast.makeText(getContext(), "Schedule added successfully.", Toast.LENGTH_SHORT).show();
-                            dialog.dismiss();
+                        if ((System.currentTimeMillis() + TimeUnit.MINUTES.toMillis(30)) < time) {
+                            if (((MainActivity) getContext()).arrayList.size() != 0 && !message.equals("")) {
+                                databaseHelper.addSchedule(time, messageText.getText().toString(), time, ((MainActivity) getContext()).arrayList);
+                                ScheduleExactJobService.scheduleExactJob(new Message(time, messageText.getText().toString(), time));
+                                Toast.makeText(getContext(), "Schedule added successfully.", Toast.LENGTH_SHORT).show();
+                                clearHistory();
+                                dialog.dismiss();
+                            } else {
+                                Toast.makeText(getContext(), "Please add contact & message first.", Toast.LENGTH_SHORT).show();
+                            }
                         } else {
-                            Toast.makeText(getContext(), "Please add contact & message first.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(), "Please set time at least 30 min from now", Toast.LENGTH_SHORT).show();
                         }
                     } else {
                         Toast.makeText(getContext(), "Please select schedule date and time.", Toast.LENGTH_SHORT).show();

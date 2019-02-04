@@ -188,9 +188,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void deleteSingleSms(long messageId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_MESSAGES, ID + " = " + messageId, null);
+        db.close();
+        deleteSingleSmsMessage(messageId);
+    }
+
+    private void deleteSingleSmsMessage(long messageId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_NUMBERS, MESSAGE_ID + " = " + messageId, null);
+        db.close();
+    }
+
     public void deleteSingleSchedule(long scheduleId) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.delete(TABLE_SCHEDULE, SCHEDULE_ID + "=" + scheduleId, null);
+        db.delete(TABLE_SCHEDULE, ID + " = " + scheduleId, null);
+        db.close();
+        deleteSingleScheduleMessage(scheduleId);
+    }
+
+    private void deleteSingleScheduleMessage(long scheduleId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(TABLE_SCHEDULE_NUMBER, SCHEDULE_ID + " = " + scheduleId, null);
         db.close();
     }
 

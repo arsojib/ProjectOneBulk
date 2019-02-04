@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.example.arsojib.bulksms.Listener.ClickListener;
 import com.example.arsojib.bulksms.Model.Message;
 import com.example.arsojib.bulksms.R;
 import com.example.arsojib.bulksms.Utils.Util;
@@ -23,10 +25,12 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
 
     Context context;
     private ArrayList<Message> arrayList;
+    ClickListener clickListener;
 
-    public ScheduleListAdapter(Context context, ArrayList<Message> arrayList) {
+    public ScheduleListAdapter(Context context, ArrayList<Message> arrayList, ClickListener clickListener) {
         this.context = context;
         this.arrayList = arrayList;
+        this.clickListener = clickListener;
     }
 
     @NonNull
@@ -46,6 +50,13 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
         viewHolder.message.setText(message);
         viewHolder.time.setText(Util.getDateFromLong(time));
         viewHolder.numberCount.setText("Total Number: " + count);
+
+        viewHolder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.onItemClick(i);
+            }
+        });
     }
 
     @Override
@@ -57,6 +68,7 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
 
         RelativeLayout layout;
         TextView message, numberCount, time;
+        ImageView remove;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +77,7 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListAdapte
             message = itemView.findViewById(R.id.message);
             numberCount = itemView.findViewById(R.id.number_count);
             time = itemView.findViewById(R.id.time);
+            remove = itemView.findViewById(R.id.remove);
 
         }
     }

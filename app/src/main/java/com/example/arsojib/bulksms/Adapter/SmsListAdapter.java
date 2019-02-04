@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,12 +22,13 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.ViewHold
 
     Context context;
     private ArrayList<Message> arrayList;
-    private ClickListener clickListener;
+    private ClickListener clickListener, deleteListener;
 
-    public SmsListAdapter(Context context, ArrayList<Message> arrayList, ClickListener clickListener) {
+    public SmsListAdapter(Context context, ArrayList<Message> arrayList, ClickListener clickListener, ClickListener deleteListener) {
         this.context = context;
         this.arrayList = arrayList;
         this.clickListener = clickListener;
+        this.deleteListener = deleteListener;
     }
 
     @NonNull
@@ -51,6 +53,13 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.ViewHold
                 clickListener.onItemClick(i);
             }
         });
+
+        viewHolder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                deleteListener.onItemClick(i);
+            }
+        });
     }
 
     @Override
@@ -62,6 +71,7 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.ViewHold
 
         RelativeLayout layout;
         TextView message, time;
+        ImageView remove;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -69,6 +79,7 @@ public class SmsListAdapter extends RecyclerView.Adapter<SmsListAdapter.ViewHold
             layout = itemView.findViewById(R.id.layout);
             message = itemView.findViewById(R.id.message);
             time = itemView.findViewById(R.id.time);
+            remove = itemView.findViewById(R.id.remove);
 
         }
     }

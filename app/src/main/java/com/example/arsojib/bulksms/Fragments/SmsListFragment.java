@@ -37,7 +37,7 @@ public class SmsListFragment extends Fragment {
     ArrayList<Message> arrayList;
     SmsListAdapter smsListAdapter;
     DatabaseHelper databaseHelper;
-    ClickListener clickListener;
+    ClickListener clickListener, deleteListener;
 
     @Nullable
     @Override
@@ -50,6 +50,15 @@ public class SmsListFragment extends Fragment {
                 Util.smsId = arrayList.get(position).getId();
                 Util.smsMessage = arrayList.get(position).getMessage();
                 fragmentTransaction(new SmsHistoryFragment());
+            }
+        };
+
+        deleteListener = new ClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                databaseHelper.deleteSingleSms(arrayList.get(position).getId());
+                arrayList.remove(position);
+                notifyChange();
             }
         };
 
@@ -68,7 +77,7 @@ public class SmsListFragment extends Fragment {
 
     private void initialComponent() {
         arrayList = new ArrayList<>();
-        smsListAdapter = new SmsListAdapter(getActivity(), arrayList, clickListener);
+        smsListAdapter = new SmsListAdapter(getActivity(), arrayList, clickListener, deleteListener);
         databaseHelper = new DatabaseHelper(getActivity());
         layout = view.findViewById(R.id.layout);
         back = view.findViewById(R.id.back);

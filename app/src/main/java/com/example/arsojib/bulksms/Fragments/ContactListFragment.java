@@ -23,7 +23,7 @@ import java.util.ArrayList;
 public class ContactListFragment extends Fragment {
 
     View view;
-    TextView count, alert;
+    TextView count, alert, clearAll;
     RecyclerView recyclerView;
 
     ContactRemoveListener contactRemoveListener;
@@ -68,6 +68,15 @@ public class ContactListFragment extends Fragment {
             }
         };
 
+        clearAll.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getContext()).arrayList.clear();
+                ((MainActivity) getContext()).contactImportCompleteCountListener.onImportCompleteCount(0);
+                notifyChange();
+            }
+        });
+
         return view;
     }
 
@@ -76,6 +85,7 @@ public class ContactListFragment extends Fragment {
         importContactListAdapterThree = new ImportContactListAdapterThree(getActivity(), ((MainActivity) getContext()).arrayList, contactRemoveListener);
         count = view.findViewById(R.id.count);
         alert = view.findViewById(R.id.alert_text);
+        clearAll = view.findViewById(R.id.clear_all);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(importContactListAdapterThree);

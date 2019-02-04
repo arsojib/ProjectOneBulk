@@ -118,7 +118,7 @@ public class ImportContactFragment extends Fragment {
             while (phones.moveToNext()) {
                 String name, number;
                 name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
-                number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)).replaceAll(" ", "");
                 arrayList.add(new Contact(name, number, false));
             }
             notifyChange();

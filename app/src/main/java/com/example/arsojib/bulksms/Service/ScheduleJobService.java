@@ -32,15 +32,15 @@ public class ScheduleJobService extends Job {
     @Override
     @NonNull
     protected Result onRunJob(Params params) {
-//        DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
-//        ArrayList<Message> schedules = databaseHelper.getAllSchedule();
-//        long currentTime = System.currentTimeMillis();
-//        for (int i = 0; i < schedules.size(); i++) {
-//            if (currentTime >= schedules.get(i).getTime()) {
-//                ScheduleExactJobService.scheduleExpiredJob(schedules.get(i));
-//            }
-//        }
-        progressNotification();
+        DatabaseHelper databaseHelper = new DatabaseHelper(getContext());
+        ArrayList<Message> schedules = databaseHelper.getAllSchedule();
+        long currentTime = System.currentTimeMillis();
+        for (int i = 0; i < schedules.size(); i++) {
+            if (currentTime >= schedules.get(i).getTime()) {
+                ScheduleExactJobService.scheduleExpiredJob(schedules.get(i));
+            }
+        }
+//        progressNotification();
         return Result.SUCCESS;
     }
 

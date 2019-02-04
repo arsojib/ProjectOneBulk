@@ -41,11 +41,21 @@ public class ScheduleListFragment extends Fragment {
     ArrayList<Message> arrayList;
     ScheduleListAdapter scheduleListAdapter;
     DatabaseHelper databaseHelper;
+    ClickListener clickListener;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.schedule_list_layout, container, false);
+
+        clickListener = new ClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                databaseHelper.deleteSingleSchedule(arrayList.get(position).getId());
+                arrayList.remove(position);
+                notifyChange();
+            }
+        };
 
         initialComponent();
         getData();
@@ -62,7 +72,7 @@ public class ScheduleListFragment extends Fragment {
 
     private void initialComponent() {
         arrayList = new ArrayList<>();
-        scheduleListAdapter = new ScheduleListAdapter(getActivity(), arrayList);
+        scheduleListAdapter = new ScheduleListAdapter(getActivity(), arrayList, clickListener);
         databaseHelper = new DatabaseHelper(getActivity());
         layout = view.findViewById(R.id.layout);
         back = view.findViewById(R.id.back);
