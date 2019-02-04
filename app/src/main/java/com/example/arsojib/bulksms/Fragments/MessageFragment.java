@@ -388,7 +388,7 @@ public class MessageFragment extends Fragment {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 mYear = year;
-                                mMonth = monthOfYear;
+                                mMonth = monthOfYear + 1;
                                 mDay = dayOfMonth;
                                 date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
                             }

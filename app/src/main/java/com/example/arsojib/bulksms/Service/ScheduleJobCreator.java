@@ -16,6 +16,8 @@ public class ScheduleJobCreator implements JobCreator {
         switch (tag) {
             case ScheduleJobService.TAG:
                 return new ScheduleJobService();
+            case ScheduleExactJobService.TAG:
+                return new ScheduleExactJobService();
             default:
                 return null;
         }

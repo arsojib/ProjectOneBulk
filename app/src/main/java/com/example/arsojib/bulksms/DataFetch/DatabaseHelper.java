@@ -165,7 +165,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public ArrayList<Contact> getAllScheduleNumberUsingScheduleID(long scheduleId) {
         ArrayList<Contact> contacts = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
-        String sql = "SELECT * FROM " + TABLE_SCHEDULE_NUMBER + " WHERE " + MESSAGE_ID + "=" + scheduleId + ";";
+        String sql = "SELECT * FROM " + TABLE_SCHEDULE_NUMBER + " WHERE " + SCHEDULE_ID + "=" + scheduleId + ";";
         Cursor c = db.rawQuery(sql, null);
         if (c.moveToFirst()) {
             do {
