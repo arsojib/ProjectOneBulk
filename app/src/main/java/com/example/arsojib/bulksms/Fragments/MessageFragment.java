@@ -155,7 +155,7 @@ public class MessageFragment extends Fragment {
         addToSchedule.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setSchedule();
+                checkPermissionForSchedule();
             }
         });
 
@@ -259,7 +259,33 @@ public class MessageFragment extends Fragment {
         } else {
             sendMySMS();
         }
+    }
 
+    private void checkPermissionForSchedule() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            int hasSMSPermission = ContextCompat.checkSelfPermission(getActivity(), SEND_SMS);
+            if (hasSMSPermission != PackageManager.PERMISSION_GRANTED) {
+                if (!shouldShowRequestPermissionRationale(SEND_SMS)) {
+                    showMessageOKCancel("You need to allow access to Send SMS",
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                                        requestPermissions(new String[]{SEND_SMS},
+                                                REQUEST_SMS);
+                                    }
+                                }
+                            });
+                    return;
+                }
+                requestPermissions(new String[]{SEND_SMS},
+                        REQUEST_SMS);
+                return;
+            }
+            setSchedule();
+        } else {
+            setSchedule();
+        }
     }
 
     private void checkPermissionPhoneState() {
