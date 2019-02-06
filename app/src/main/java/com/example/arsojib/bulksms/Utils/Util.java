@@ -56,6 +56,10 @@ public class Util {
         }
     }
 
+    public void callAllPermission() {
+
+    }
+
     public boolean checkPermissionREAD_EXTERNAL_STORAGE(
             final Context context) {
         int currentAPIVersion = Build.VERSION.SDK_INT;

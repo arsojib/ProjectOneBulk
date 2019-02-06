@@ -1,6 +1,7 @@
 package com.example.arsojib.bulksms.Utils;
 
 import android.app.Application;
+import android.support.multidex.MultiDex;
 
 import com.evernote.android.job.JobManager;
 import com.example.arsojib.bulksms.Service.ScheduleJobCreator;
@@ -13,6 +14,7 @@ public class MainApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        MultiDex.install(this);
         JobManager.create(this).addJobCreator(new ScheduleJobCreator());
     }
 }

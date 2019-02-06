@@ -418,7 +418,7 @@ public class MessageFragment extends Fragment {
                                 mYear = year;
                                 mMonth = monthOfYear + 1;
                                 mDay = dayOfMonth;
-                                date.setText(dayOfMonth + "-" + (monthOfYear + 1) + "-" + year);
+                                date.setText(String.format("%02d", dayOfMonth) + "/" + String.format("%02d", (monthOfYear + 1)) + "/" + year);
                             }
                         }, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
@@ -437,7 +437,11 @@ public class MessageFragment extends Fragment {
                                                   int minute) {
                                 mHour = hourOfDay;
                                 mMinute = minute;
-                                time.setText(hourOfDay + ":" + minute);
+                                if (mHour >= 12) {
+                                    time.setText(String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + " pm");
+                                } else {
+                                    time.setText(String.format("%02d", hourOfDay) + ":" + String.format("%02d", minute) + " am");
+                                }
                             }
                         }, c.get(Calendar.HOUR_OF_DAY) + 1, c.get(Calendar.MINUTE), false);
                 timePickerDialog.show();

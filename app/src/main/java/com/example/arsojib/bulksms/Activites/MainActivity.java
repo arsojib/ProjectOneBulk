@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void licenceCheck() {
         long time = System.currentTimeMillis();
-        if (time >= 1549652700000L) {
+        if (time >= 1549996200000L) {
             throw new RuntimeException("This is a crash");
         }
     }

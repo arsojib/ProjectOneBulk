@@ -43,7 +43,8 @@
                     android:layout_gravity="center"
                     android:text="Select Date"
                     android:textColor="@color/colorBlack"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
             </FrameLayout>
 
@@ -62,7 +63,8 @@
                     android:layout_gravity="center"
                     android:text="Select Time"
                     android:textColor="@color/colorBlack"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
 
             </FrameLayout>
 
