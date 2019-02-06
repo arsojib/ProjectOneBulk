@@ -68,9 +68,10 @@ public class MessageFragment extends Fragment {
     EditText messageText;
     FrameLayout sendMessage, addToSchedule;
 
+    List<SubscriptionInfo> subscriptionInfoList;
     String message = "";
     final int REQUEST_SMS = 111, REQUEST_PHONE_STATE = 112;
-    int smsCount = 0, sim = 5;
+    int smsCount = 0, sim = Util.defaultID;
     boolean hasSim = false;
 
     @Nullable
@@ -132,21 +133,26 @@ public class MessageFragment extends Fragment {
         sendMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (hasSim) {
-                    if (simOneButton.isChecked() || simTwoButton.isChecked()) {
-                        if (simOneButton.isChecked()) {
-                            sim = 0;
-                        } else if (simTwoButton.isChecked()) {
-                            sim = 1;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+                    if (hasSim) {
+                        if (simOneButton.isChecked() || simTwoButton.isChecked()) {
+                            if (simOneButton.isChecked()) {
+                                sim = subscriptionInfoList.get(0).getSubscriptionId();
+                            } else if (simTwoButton.isChecked()) {
+                                sim = subscriptionInfoList.get(1).getSubscriptionId();
+                            }
                         }
-                    }
-                    if (sim == 5) {
-                        Toast.makeText(getContext(), "Please Select a Sim.", Toast.LENGTH_SHORT).show();
+                        if (sim == Util.defaultID) {
+                            Toast.makeText(getContext(), "Please Select a Sim.", Toast.LENGTH_SHORT).show();
+                        } else {
+                            send();
+                        }
                     } else {
+                        sim = Util.defaultID;
                         send();
                     }
                 } else {
-                    sim = 5;
+                    sim = Util.defaultID;
                     send();
                 }
             }
@@ -172,6 +178,7 @@ public class MessageFragment extends Fragment {
     }
 
     private void initialComponent() {
+        subscriptionInfoList = new ArrayList<>();
         simSelectionLayout = view.findViewById(R.id.sim_selection_layout);
         simOneLayout = view.findViewById(R.id.sim_one_layout);
         simTwoLayout = view.findViewById(R.id.sim_two_layout);
@@ -199,13 +206,13 @@ public class MessageFragment extends Fragment {
                     // for ActivityCompat#requestPermissions for more details.
                     return;
                 }
-                List<SubscriptionInfo> subscriptionInfoList = subscriptionManager.getActiveSubscriptionInfoList();
+                subscriptionInfoList.addAll(subscriptionManager.getActiveSubscriptionInfoList());
                 if (subscriptionInfoList == null || subscriptionInfoList.size() == 0) {
                     hasSim = false;
                     simSelectionLayout.setVisibility(View.GONE);
                 } else if (subscriptionInfoList.size() == 1) {
-                    hasSim = true;
-                    simSelectionLayout.setVisibility(View.VISIBLE);
+                    hasSim = false;
+                    simSelectionLayout.setVisibility(View.GONE);
                     if (subscriptionInfoList.get(0).getSubscriptionId() == 1) {
                         simOneLayout.setVisibility(View.VISIBLE);
                         simTwoLayout.setVisibility(View.GONE);

@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.example.arsojib.bulksms.DataFetch.DatabaseHelper;
 import com.example.arsojib.bulksms.Model.Contact;
 import com.example.arsojib.bulksms.R;
+import com.example.arsojib.bulksms.Utils.Util;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,7 +130,7 @@ public class SmsManagementService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         arrayList = (ArrayList<Contact>) intent.getSerializableExtra("contact_list");
         message = intent.getStringExtra("message");
-        sim = intent.getIntExtra("sim", 5);
+        sim = intent.getIntExtra("sim", Util.defaultID);
         isOld = intent.getBooleanExtra("old", false);
         messageId = System.currentTimeMillis();
         long time = System.currentTimeMillis();
@@ -161,12 +162,11 @@ public class SmsManagementService extends Service {
     private void send(String phone) {
         Log.d(TAG, "service start");
         SmsManager sms;
-        if (sim == 5) {
+        if (sim == Util.defaultID) {
             sms = SmsManager.getDefault();
         } else {
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-//                sms = SmsManager.getSmsManagerForSubscriptionId(sim);
-                sms = SmsManager.getDefault();
+                sms = SmsManager.getSmsManagerForSubscriptionId(sim);
             } else {
                 sms = SmsManager.getDefault();
             }
