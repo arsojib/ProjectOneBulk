@@ -108,7 +108,9 @@ public class MessageFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                messageLength.setText("∞ / " + messageText.length());
+                int size = (int) (messageText.length() / 145);
+                int realSize = size + 1;
+                messageLength.setText(realSize + " / " + messageText.length());
             }
         });
 
