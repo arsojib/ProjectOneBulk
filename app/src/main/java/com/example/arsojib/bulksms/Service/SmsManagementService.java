@@ -174,9 +174,14 @@ public class SmsManagementService extends Service {
         // if message length is too long messages are divided
         List<String> messages = sms.divideMessage(message);
         for (String msg : messages) {
-            PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT"), 0);
-            PendingIntent deliveredIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
-            sms.sendTextMessage(phone, null, msg, sentIntent, deliveredIntent);
+            try {
+                Thread.sleep(1200);
+                PendingIntent sentIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_SENT"), 0);
+                PendingIntent deliveredIntent = PendingIntent.getBroadcast(this, 0, new Intent("SMS_DELIVERED"), 0);
+                sms.sendTextMessage(phone, null, msg, sentIntent, deliveredIntent);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
         Log.d(TAG, "send sent " + message);
     }
@@ -214,9 +219,9 @@ public class SmsManagementService extends Service {
         if (sendCount >= arrayList.size()) {
             mBuilder.setContentText("Sms Send Complete")
                     // Removes the progress bar
-                    .setProgress(0,0,false);
+                    .setProgress(0, 0, false);
         } else {
-            mBuilder.setProgress(100, (sendCount/arrayList.size()) * 100, false);
+            mBuilder.setProgress(100, (sendCount / arrayList.size()) * 100, true);
         }
         notificationManager.notify(ID, mBuilder.build());
     }

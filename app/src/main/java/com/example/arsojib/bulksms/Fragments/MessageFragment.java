@@ -377,7 +377,8 @@ public class MessageFragment extends Fragment {
                     progressBar.setProgress(100);
                 } else {
                     sentCount.setText("Sent: " + smsCount + " / " + "Total: " + total);
-                    progressBar.setProgress((int) ((smsCount / total) * 100));
+                    float result = smsCount / total;
+                    progressBar.setProgress((int) (result * 100));
                 }
             }
         };

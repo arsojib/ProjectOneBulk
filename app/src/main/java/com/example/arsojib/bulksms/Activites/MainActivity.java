@@ -56,8 +56,6 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
         setupViewPager(viewPager);
         setupTabIcons();
-//        schedulePeriodicJob();
-        licenceCheck();
 
         drawer.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -108,13 +106,6 @@ public class MainActivity extends AppCompatActivity {
             tabLayout.getTabAt(1).setIcon(tabIcons[1]);
             tabLayout.getTabAt(2).setIcon(tabIcons[2]);
         } catch (RuntimeException ignored) {
-        }
-    }
-
-    private void licenceCheck() {
-        long time = System.currentTimeMillis();
-        if (time >= 1551114482000L) {
-            throw new RuntimeException("This is a crash");
         }
     }
 
