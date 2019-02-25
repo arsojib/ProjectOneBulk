@@ -108,7 +108,7 @@ public class MessageFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                int size = (int) (messageText.length() / 145);
+                int size = (int) (messageText.length() / 160);
                 int realSize = size + 1;
                 messageLength.setText(realSize + " / " + messageText.length());
             }
@@ -377,7 +377,7 @@ public class MessageFragment extends Fragment {
                     progressBar.setProgress(100);
                 } else {
                     sentCount.setText("Sent: " + smsCount + " / " + "Total: " + total);
-                    float result = smsCount / total;
+                    float result = (float) smsCount / (float) total;
                     progressBar.setProgress((int) (result * 100));
                 }
             }
