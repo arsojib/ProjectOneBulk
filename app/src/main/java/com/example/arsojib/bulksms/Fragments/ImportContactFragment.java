@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,10 +34,11 @@ public class ImportContactFragment extends Fragment {
     TextView done, alert;
     CheckBox selectAll;
     RecyclerView recyclerView;
+    SearchView searchView;
 
     ContactRemoveListener contactRemoveListener;
     ImportContactListAdapterTwo importContactListAdapter;
-    ArrayList<Contact> arrayList;
+    ArrayList<Contact> arrayList, contactArrayList;
 
     @Nullable
     @Override
@@ -51,7 +53,7 @@ public class ImportContactFragment extends Fragment {
 
             @Override
             public void onContactUnCheck(Contact contact, int position) {
-                arrayList.remove(position);
+                contactArrayList.remove(position);
                 notifyChange();;
             }
         };
@@ -59,16 +61,54 @@ public class ImportContactFragment extends Fragment {
         initialComponent();
         getContactList();
 
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                contactArrayList.clear();
+                String query = s.toLowerCase();
+                if (query.equals("")) {
+                    for (Contact contact : arrayList) {
+                        contactArrayList.add(contact);
+                    }
+                } else {
+                    for (Contact contact : arrayList) {
+                        if (contact.getName().toLowerCase().contains(query)) {
+                            contactArrayList.add(contact);
+                        }
+                    }
+                }
+                notifyChange();
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                contactArrayList.clear();
+                for (Contact contact : arrayList) {
+                    contactArrayList.add(contact);
+                }
+                notifyChange();
+                return false;
+            }
+        });
+
         selectAll.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    for (int i = 0; i < arrayList.size(); i++) {
-                        arrayList.get(i).setCheck(true);
+                    for (int i = 0; i < contactArrayList.size(); i++) {
+                        contactArrayList.get(i).setCheck(true);
                     }
                 } else {
-                    for (int i = 0; i < arrayList.size(); i++) {
-                        arrayList.get(i).setCheck(false);
+                    for (int i = 0; i < contactArrayList.size(); i++) {
+                        contactArrayList.get(i).setCheck(false);
                     }
                 }
                 notifyChange();
@@ -101,11 +141,13 @@ public class ImportContactFragment extends Fragment {
 
     private void initialComponent() {
         arrayList = new ArrayList<>();
-        importContactListAdapter = new ImportContactListAdapterTwo(getActivity(), arrayList, contactRemoveListener);
+        contactArrayList = new ArrayList<>();
+        importContactListAdapter = new ImportContactListAdapterTwo(getActivity(), contactArrayList, contactRemoveListener);
         back = view.findViewById(R.id.back);
         done = view.findViewById(R.id.done);
         alert = view.findViewById(R.id.alert_text);
         selectAll = view.findViewById(R.id.checkbox);
+        searchView = view.findViewById(R.id.search_view);
         recyclerView = view.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(importContactListAdapter);
@@ -120,6 +162,7 @@ public class ImportContactFragment extends Fragment {
                 name = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
                 number = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)).replaceAll(" ", "");
                 arrayList.add(new Contact(name, number, false));
+                contactArrayList.add(new Contact(name, number, false));
             }
             notifyChange();
         } catch (NullPointerException ignored) {
@@ -133,7 +176,7 @@ public class ImportContactFragment extends Fragment {
 
     private void notifyChange() {
         importContactListAdapter.notifyDataSetChanged();
-        if (arrayList.size() == 0) {
+        if (contactArrayList.size() == 0) {
             alert.setVisibility(View.VISIBLE);
         } else {
             alert.setVisibility(View.GONE);
